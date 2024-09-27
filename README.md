@@ -4,6 +4,9 @@ This repo contains the code for neccessary for the UA NASA Robotics' 2024-2025 r
 ### File Structure
 There are three main folder at top level: ROS, Docs, and ROI. ROS holds the packages and various other ROS focus programs, so stuff running on the SBC and RS. The other 'ROI' is used for code not pretaining to ROS, but still critical to robot operation. An example would be the code running on the arduinos. An example of what would *not* go here is code for the test robot, or website. Lastly, the Docs folder which is documents pretaining to the code for this year.
 
+### ROI
+The ROI repo is installed as a submodule. When cloning the repository, run `git submodule init` and `git submodule update` to clone the latest ROI code into your workspace.
+
 ## ROS Diagram
 
 ![Image Didn't Load :(](./Docs/ROS_Flowchart.png "ROS Diagram")
