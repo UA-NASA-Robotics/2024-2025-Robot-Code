@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.sdf": "xml",
-        "*.gzlaunch": "xml",
-        "map": "cpp"
-    },
-    "ros.distro": "humble",
-    "cmake.sourceDirectory": "/home/davidreese/Code/2024-2025-Robot-Code/ROS/RS_Package"
-}
