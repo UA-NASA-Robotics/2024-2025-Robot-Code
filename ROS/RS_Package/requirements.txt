@@ -1,0 +1,9 @@
+# Python dependencies for ROS 2 launch system and related packages
+
+launch
+launch_ros
+rclpy
+joy
+teleop_twist_joy
+ament_cmake
+rclcpp
