@@ -8,10 +8,10 @@ axis_linear:
   y: 0  # Left stick horizontal axis (not used)
   z: -1 # Not used
 
-scale_linear:
-  x: 1.0 
-  y: 0.0
-  z: 0.0
+# scale_linear:
+#   x: 1.0 
+#   y: 0.0
+#   z: 0.0
 
 # Axis mapping for angular movement
 axis_angular:
@@ -19,14 +19,10 @@ axis_angular:
   pitch: -1  # Not used
   roll: -1   # Not used
 
-scale_angular:
-  yaw: 1.0 
-  pitch: 0.0
-  roll: 0.0
-
-# Enable button mapping
-# This makes it so the controller only reads inputs when R1 is pressed.
-# enable_button: 5  # R1 button on PS4 controller
+# scale_angular:
+#  yaw: 1.0 
+#  pitch: 0.0
+#  roll: 0.0
 
 # Deadzone for joystick axes
 deadzone: 0.01

@@ -1,18 +1,7 @@
-# controller_turtle.launch.py
-
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
-import os
 
 def generate_launch_description():
-    # Define the relative path to the YAML configuration
-    config_file = os.path.join(
-        FindPackageShare('RS_Package').find('RS_Package'),
-        '../config',  # Relative path inside the package
-        'ps3.config.yaml'  # The YAML file
-    )
-
     return LaunchDescription([
         # =========================================================
         # Launch the Turtlesim node (for testing purposes)
@@ -38,14 +27,25 @@ def generate_launch_description():
         ),
 
         # =========================================================
-        # Launch the teleop_twist_joy_node to convert joystick inputs to Twist messages
+        # Launch the teleop_node (instead of teleop_twist_joy_node) to convert joystick inputs to Twist messages
         # =========================================================
         Node(
             package='teleop_twist_joy',   # ROS package that contains the node
-            executable='teleop_twist_joy_node', # The executable to run
-            name='teleop_twist_joy_node', # The name to assign to the node
+            executable='teleop_node',     # The correct executable name
+            name='teleop_node',           # The name to assign to the node
             output='screen',              # Logs outputs to the screen
-            parameters=[config_file],     # Use relative path to the PS3 controller configuration file
+            parameters=[                  # Manually define PS3 controller parameters
+                {
+                    'axis_linear': 1,            # Axis mapping for linear velocity (e.g., left stick up/down)
+                    'axis_angular': 0,           # Axis mapping for angular velocity (e.g., left stick left/right)
+                    'scale_linear': 2.0,         # Linear scaling factor
+                    'scale_angular': 1.0,        # Angular scaling factor
+                    'enable_button': 5,          # Button that enables movement (e.g., R1 button)
+                    'enable_turbo_button': 4,    # Button for turbo mode (e.g., R2 button)
+                    'scale_linear_turbo': 3.0,   # Turbo scaling factor for linear velocity
+                    'scale_angular_turbo': 2.0   # Turbo scaling factor for angular velocity
+                }
+            ],
             remappings=[                  # Remaps topics for communication between nodes
                 ('/cmd_vel', '/turtle1/cmd_vel')  # Remap /cmd_vel to /turtle1/cmd_vel
             ]

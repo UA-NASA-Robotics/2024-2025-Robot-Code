@@ -1,31 +1,50 @@
-# RS Package README
+# Remote Station Package (Human Control Input)
 
-## Inputs/Outputs
+For our competition we'd like to implement both human input (PS3 Controller) and autonomous driving to move the robot. "Remote Station" refers to the fact, that the PS3 controller will not be attached to the robot, but rather a laptop.
 
-### Published Topics
+#### The RS Package is built from pre-written ROS packages so far, such as `joy` and `teleop_twist_joy`
 
-#### `/joy` (from `joy_node`) - Sensor Message
+#### `/joy` - Takes input from USB Joystick.
 
-- **Message Type**: `sensor_msgs/Joy`
-- **Description**: Publishes the current state of the joystick buttons and axes.
-- **Key Fields**:
-    - `axes`: List of floating-point values representing the positions of the joystick axes (e.g., left stick, right stick).
-    - `buttons`: List of integers representing the state of the buttons (pressed = 1, not pressed = 0).
-
-- **Example Data**:
-
-    ```yaml
-    axes: [0.0, 1.0, -0.5]  # Example for a joystick pushed fully forward and partially to the right
-    buttons: [0, 0, 0, 0, 1]  # Example where the R1 button is pressed
-    ```
-
-- **Example Data Structures**:
+- **Description**: Publishes `sensor_msgs/joy` => the current state of the joystick buttons and axes.
 
     ```C++
     struct Joy {
         std::vector<float> axes;  // Positions of the joystick axes (e.g., sticks)
         std::vector<int32_t> buttons;  // States of the joystick buttons (pressed = 1, not pressed = 0)
     };
+    ```
+
+- **Key Fields**:
+    - `axes`: List of floating-point values representing the positions of the joystick axes (e.g., left stick, right stick).
+
+    ```
+    axes:
+    - 0.0   # left stick,   left is positive
+    - 0.0   # left stick,   up is positive
+    - 1.0   # left trigger  depression
+    - 0.0   # right stick,  left is positive
+    - 0.0   # right stick,  up is positve
+    - 1.0   # right trigger depression
+    - 0.0   # d-pad horiz., left is positive
+    - 0.0   # d-pad vert.,  up is positve
+    ```
+
+    - `buttons`: List of integers representing the state of the buttons (pressed = 1, not pressed = 0).
+
+    ```
+    buttons:
+    - 0   # A/cross button 
+    - 0   # B/circle button
+    - 0   # X/square button
+    - 0   # Y/triangle button
+    - 0   # Left/R1 button
+    - 0   # Right/R1 button
+    - 0   # Select Button
+    - 0   # Start Button
+    - 0   # P3/Home Button
+    - 0   # Left Stick/L3 Button
+    - 0   # Right Stick/R3 Button
     ```
 
 #### `/cmd_vel` (from `teleop_twist_joy_node`) - Geometry Message
@@ -47,16 +66,16 @@
       y: 0.0  # Not Used
       z: 0.0  # Not Used
     angular: 
-      x: 0.0  # Not Used
-      y: 0.0  # Not Used
-      z: 1.0  # Rotate around Z-axis at 1 radian (counter-clockwise) per second
+      roll: 0.0  # Not Used
+      pitch: 0.0  # Not Used
+      yaw: 1.0  # Rotate around Z-axis at 1 radian (counter-clockwise) per second
     ```
 
 - **Example Data Structures**:
 
     ```C++
     struct Twist {
-        Vector3 linear;  // Linear velocity in the x, y, and z directions
+        Vector3 linear;   // Linear velocity in the x, y, and z directions
         Vector3 angular;  // Angular velocity (rotation) around the x, y, and z axes
     };
 
@@ -71,10 +90,40 @@
     twist_message.linear.y = 0.0;  // No movement sideways
     twist_message.linear.z = 0.0;  // No vertical movement
 
-    twist_message.angular.x = 0.0;  // No roll
-    twist_message.angular.y = 0.0;  // No pitch
-    twist_message.angular.z = 1.0;  // Turn right at 1 rad/s
+    twist_message.angular.roll = 0.0;  // No roll
+    twist_message.angular.pitch = 0.0;  // No pitch
+    twist_message.angular.yaw = 1.0;  // Turn right at 1 rad/s
     ```
+
+### Angular Motion: Roll, Pitch, and Yaw
+
+In 3D space, an object can rotate around three different axes:
+
+- **Roll (X-axis rotation)**:  
+  Rotation around the X-axis, which runs from front to back of the robot.  
+  Imagine the robot tilting side-to-side, similar to how an airplane rolls when one wing dips down and the other rises.  
+  In most ground-based robots, roll is typically not used.
+
+- **Pitch (Y-axis rotation)**:  
+  Rotation around the Y-axis, which runs from left to right of the robot.  
+  This is like nodding your head up and down or the robot tilting forward and backward.  
+  Like roll, pitch is not used for movement in most ground-based robots.
+
+- **Yaw (Z-axis rotation)**:  
+  Rotation around the Z-axis, which runs vertically through the robot.  
+  Yaw is responsible for turning the robot left or right (rotation around its own center, like turning in place).  
+  This is commonly used in robots to control turning or steering.
+
+---
+
+### Linear Motion (X, Y, Z)
+
+Linear movement refers to motion along the three axes:
+
+- **X (Forward/Backward)**: Movement forward and backward (along the X-axis).
+- **Y (Side-to-side)**: Lateral movement left and right (along the Y-axis, rarely used in wheeled robots).
+- **Z (Up/Down)**: Vertical movement (along the Z-axis, also rarely used in wheeled robots).
+
 
 ## Nodes Used
 
@@ -104,3 +153,20 @@
 - **Remappings**:
     - `/cmd_vel`: Remapped to `/turtle1/cmd_vel` to ensure the velocity commands reach the Turtlesim node.
 - **Output**: The node publishes `geometry_msgs/Twist` messages, which describe the linear and angular velocity of the robot (in this case, the turtle). These messages are sent to `/turtle1/cmd_vel` to control the movement of the turtle in Turtlesim.
+
+
+## Desired Movement (RS Package Output):
+
+    ```C++
+    // joy, published by RS package only
+    struct Joy {
+        std::vector<float> axes;        // Not used past priority node.
+        std::vector<int32_t> buttons;   // Used throughout queue package.
+    };
+
+    // cmd_vel, published by RS & Autonomy
+    struct Twist {
+        Vector3 linear;  // Linear velocity in the x, y, and z directions
+        Vector3 angular;  // Angular velocity (rotation) around the x, y, and z axes
+    };
+    ```

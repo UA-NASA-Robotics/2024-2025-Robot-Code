@@ -11,8 +11,6 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(joy REQUIRED)
 find_package(teleop_twist_joy REQUIRED)
-find_package(launch REQUIRED)
-find_package(launch_ros REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -26,9 +24,14 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-# Install launch files
+# Installation of files.
 install(
-  DIRECTORY launch config
+  DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(
+  DIRECTORY config/
   DESTINATION share/${PROJECT_NAME}
 )
 
