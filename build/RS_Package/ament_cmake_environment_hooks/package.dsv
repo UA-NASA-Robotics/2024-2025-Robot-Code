@@ -1,0 +1,4 @@
+source;share/RS_Package/local_setup.bash
+source;share/RS_Package/local_setup.dsv
+source;share/RS_Package/local_setup.sh
+source;share/RS_Package/local_setup.zsh

@@ -1,0 +1,327 @@
+[0.228s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'rs_package']
+[0.228s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=24, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['rs_package'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7ff075587920>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7ff075587680>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7ff075587680>>, mixin_verb=('build',))
+[0.300s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.301s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.301s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/express/Code/2024-2025-Robot-Code'
+[0.301s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.301s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.302s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.353s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.353s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.353s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.354s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.354s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.354s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extensions ['ignore', 'ignore_ament_install']
+[0.354s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'ignore'
+[0.354s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'ignore_ament_install'
+[0.354s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extensions ['colcon_pkg']
+[0.354s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'colcon_pkg'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extensions ['colcon_meta']
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'colcon_meta'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extensions ['ros']
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'ros'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extensions ['cmake', 'python']
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'cmake'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'python'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extensions ['python_setup_py']
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(Docs) by extension 'python_setup_py'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extensions ['ignore', 'ignore_ament_install']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'ignore'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'ignore_ament_install'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extensions ['colcon_pkg']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'colcon_pkg'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extensions ['colcon_meta']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'colcon_meta'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extensions ['ros']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'ros'
+[0.357s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extensions ['cmake', 'python']
+[0.357s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'cmake'
+[0.357s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'python'
+[0.357s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extensions ['python_setup_py']
+[0.357s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples) by extension 'python_setup_py'
+[0.357s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extensions ['ignore', 'ignore_ament_install']
+[0.357s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'ignore'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'ignore_ament_install'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extensions ['colcon_pkg']
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'colcon_pkg'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extensions ['colcon_meta']
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'colcon_meta'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extensions ['ros']
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'ros'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extensions ['cmake', 'python']
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'cmake'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'python'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extensions ['python_setup_py']
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code) by extension 'python_setup_py'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extensions ['ignore', 'ignore_ament_install']
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'ignore'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'ignore_ament_install'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extensions ['colcon_pkg']
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'colcon_pkg'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extensions ['colcon_meta']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'colcon_meta'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extensions ['ros']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'ros'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extensions ['cmake', 'python']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'cmake'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'python'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extensions ['python_setup_py']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/include) by extension 'python_setup_py'
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extensions ['ignore', 'ignore_ament_install']
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'ignore'
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'ignore_ament_install'
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extensions ['colcon_pkg']
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'colcon_pkg'
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extensions ['colcon_meta']
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'colcon_meta'
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extensions ['ros']
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'ros'
+[0.362s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extensions ['cmake', 'python']
+[0.362s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'cmake'
+[0.362s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'python'
+[0.362s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extensions ['python_setup_py']
+[0.362s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib) by extension 'python_setup_py'
+[0.362s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extensions ['ignore', 'ignore_ament_install']
+[0.362s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'ignore'
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'ignore_ament_install'
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extensions ['colcon_pkg']
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'colcon_pkg'
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extensions ['colcon_meta']
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'colcon_meta'
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extensions ['ros']
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'ros'
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extensions ['cmake', 'python']
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'cmake'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'python'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extensions ['python_setup_py']
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino) by extension 'python_setup_py'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extensions ['ignore', 'ignore_ament_install']
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'ignore'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'ignore_ament_install'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extensions ['colcon_pkg']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'colcon_pkg'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extensions ['colcon_meta']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'colcon_meta'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extensions ['ros']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'ros'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extensions ['cmake', 'python']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'cmake'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'python'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extensions ['python_setup_py']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/lib/ODriveArduino/src) by extension 'python_setup_py'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extensions ['ignore', 'ignore_ament_install']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'ignore'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'ignore_ament_install'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extensions ['colcon_pkg']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'colcon_pkg'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extensions ['colcon_meta']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'colcon_meta'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extensions ['ros']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'ros'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extensions ['cmake', 'python']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'cmake'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'python'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extensions ['python_setup_py']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/src) by extension 'python_setup_py'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extensions ['ignore', 'ignore_ament_install']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'ignore'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'ignore_ament_install'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extensions ['colcon_pkg']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'colcon_pkg'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extensions ['colcon_meta']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'colcon_meta'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extensions ['ros']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'ros'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extensions ['cmake', 'python']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'cmake'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'python'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extensions ['python_setup_py']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(Docs/Examples/ODrive_Arduino_Code/test) by extension 'python_setup_py'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extensions ['ignore', 'ignore_ament_install']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'ignore'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'ignore_ament_install'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extensions ['colcon_pkg']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'colcon_pkg'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extensions ['colcon_meta']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'colcon_meta'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extensions ['ros']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'ros'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extensions ['cmake', 'python']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'cmake'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'python'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extensions ['python_setup_py']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(Other) by extension 'python_setup_py'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extensions ['ignore', 'ignore_ament_install']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'ignore'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'ignore_ament_install'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extensions ['colcon_pkg']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'colcon_pkg'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extensions ['colcon_meta']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'colcon_meta'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extensions ['ros']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'ros'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extensions ['cmake', 'python']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'cmake'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'python'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extensions ['python_setup_py']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROI) by extension 'python_setup_py'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extensions ['ignore', 'ignore_ament_install']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'ignore'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'ignore_ament_install'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extensions ['colcon_pkg']
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'colcon_pkg'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extensions ['colcon_meta']
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'colcon_meta'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extensions ['ros']
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'ros'
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extensions ['cmake', 'python']
+[0.373s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'cmake'
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'python'
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extensions ['python_setup_py']
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS) by extension 'python_setup_py'
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extensions ['ignore', 'ignore_ament_install']
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extension 'ignore'
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extension 'ignore_ament_install'
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extensions ['colcon_pkg']
+[0.374s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extension 'colcon_pkg'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extensions ['colcon_meta']
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extension 'colcon_meta'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extensions ['ros']
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Auto_Package) by extension 'ros'
+[0.379s] DEBUG:colcon.colcon_core.package_identification:Package 'ROS/Auto_Package' with type 'ros.ament_cmake' and name 'Auto_Package'
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extensions ['ignore', 'ignore_ament_install']
+[0.379s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extension 'ignore'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extension 'ignore_ament_install'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extensions ['colcon_pkg']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extension 'colcon_pkg'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extensions ['colcon_meta']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extension 'colcon_meta'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extensions ['ros']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/MCU_Package) by extension 'ros'
+[0.381s] DEBUG:colcon.colcon_core.package_identification:Package 'ROS/MCU_Package' with type 'ros.ament_cmake' and name 'MCU_Package'
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extensions ['ignore', 'ignore_ament_install']
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extension 'ignore'
+[0.382s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extension 'ignore_ament_install'
+[0.382s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extensions ['colcon_pkg']
+[0.382s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extension 'colcon_pkg'
+[0.382s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extensions ['colcon_meta']
+[0.382s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extension 'colcon_meta'
+[0.382s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extensions ['ros']
+[0.382s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/Que_Package) by extension 'ros'
+[0.383s] DEBUG:colcon.colcon_core.package_identification:Package 'ROS/Que_Package' with type 'ros.ament_cmake' and name 'Que_Package'
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extensions ['ignore', 'ignore_ament_install']
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extension 'ignore'
+[0.383s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extension 'ignore_ament_install'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extensions ['colcon_pkg']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extension 'colcon_pkg'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extensions ['colcon_meta']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extension 'colcon_meta'
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extensions ['ros']
+[0.384s] Level 1:colcon.colcon_core.package_identification:_identify(ROS/RS_Package) by extension 'ros'
+[0.385s] DEBUG:colcon.colcon_core.package_identification:Package 'ROS/RS_Package' with type 'ros.ament_cmake' and name 'rs_package'
+[0.385s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.386s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.387s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.387s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.387s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.387s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.387s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.387s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.420s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'Auto_Package' in 'ROS/Auto_Package'
+[0.420s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'MCU_Package' in 'ROS/MCU_Package'
+[0.420s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'Que_Package' in 'ROS/Que_Package'
+[0.421s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.421s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.427s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 357 installed packages in /opt/ros/jazzy
+[0.430s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.553s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'cmake_args' from command line to 'None'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'cmake_target' from command line to 'None'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'cmake_clean_cache' from command line to 'False'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'cmake_clean_first' from command line to 'False'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'cmake_force_configure' from command line to 'False'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'ament_cmake_args' from command line to 'None'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'catkin_cmake_args' from command line to 'None'
+[0.554s] Level 5:colcon.colcon_core.verb:set package 'rs_package' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.554s] DEBUG:colcon.colcon_core.verb:Building package 'rs_package' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/express/Code/2024-2025-Robot-Code/build/rs_package', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/express/Code/2024-2025-Robot-Code/install/rs_package', 'merge_install': False, 'path': '/home/express/Code/2024-2025-Robot-Code/ROS/RS_Package', 'symlink_install': False, 'test_result_base': None}
+[0.554s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.556s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.557s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/express/Code/2024-2025-Robot-Code/ROS/RS_Package' with build type 'ament_cmake'
+[0.557s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/express/Code/2024-2025-Robot-Code/ROS/RS_Package'
+[0.562s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.562s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.562s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.582s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/express/Code/2024-2025-Robot-Code/build/rs_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/express/Code/2024-2025-Robot-Code/ROS/RS_Package -DCMAKE_INSTALL_PREFIX=/home/express/Code/2024-2025-Robot-Code/install/rs_package
+[2.253s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/express/Code/2024-2025-Robot-Code/build/rs_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/express/Code/2024-2025-Robot-Code/ROS/RS_Package -DCMAKE_INSTALL_PREFIX=/home/express/Code/2024-2025-Robot-Code/install/rs_package
+[2.259s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/express/Code/2024-2025-Robot-Code/build/rs_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/express/Code/2024-2025-Robot-Code/build/rs_package -- -j24 -l24
+[2.369s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/express/Code/2024-2025-Robot-Code/build/rs_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/express/Code/2024-2025-Robot-Code/build/rs_package -- -j24 -l24
+[2.452s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/express/Code/2024-2025-Robot-Code/build/rs_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/express/Code/2024-2025-Robot-Code/build/rs_package
+[2.484s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rs_package)
+[2.490s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/express/Code/2024-2025-Robot-Code/build/rs_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/express/Code/2024-2025-Robot-Code/build/rs_package
+[2.496s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package' for CMake module files
+[2.498s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package' for CMake config files
+[2.500s] Level 1:colcon.colcon_core.shell:create_environment_hook('rs_package', 'cmake_prefix_path')
+[2.500s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/hook/cmake_prefix_path.ps1'
+[2.502s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/hook/cmake_prefix_path.dsv'
+[2.504s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/hook/cmake_prefix_path.sh'
+[2.507s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/bin'
+[2.507s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/lib/pkgconfig/rs_package.pc'
+[2.508s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/lib/python3.12/site-packages'
+[2.509s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/bin'
+[2.509s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.ps1'
+[2.512s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.dsv'
+[2.514s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.sh'
+[2.516s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.bash'
+[2.518s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.zsh'
+[2.520s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/colcon-core/packages/rs_package)
+[2.578s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rs_package)
+[2.579s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package' for CMake module files
+[2.582s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package' for CMake config files
+[2.583s] Level 1:colcon.colcon_core.shell:create_environment_hook('rs_package', 'cmake_prefix_path')
+[2.583s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/hook/cmake_prefix_path.ps1'
+[2.585s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/hook/cmake_prefix_path.dsv'
+[2.586s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/hook/cmake_prefix_path.sh'
+[2.588s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/bin'
+[2.589s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/lib/pkgconfig/rs_package.pc'
+[2.590s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/lib/python3.12/site-packages'
+[2.590s] Level 1:colcon.colcon_core.environment:checking '/home/express/Code/2024-2025-Robot-Code/install/rs_package/bin'
+[2.591s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.ps1'
+[2.593s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.dsv'
+[2.595s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.sh'
+[2.597s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.bash'
+[2.598s] INFO:colcon.colcon_core.shell:Creating package script '/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/rs_package/package.zsh'
+[2.600s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/express/Code/2024-2025-Robot-Code/install/rs_package/share/colcon-core/packages/rs_package)
+[2.601s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.602s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.602s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.602s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.626s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[2.627s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[2.627s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[2.678s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.679s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/express/Code/2024-2025-Robot-Code/install/local_setup.ps1'
+[2.682s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/express/Code/2024-2025-Robot-Code/install/_local_setup_util_ps1.py'
+[2.686s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/express/Code/2024-2025-Robot-Code/install/setup.ps1'
+[2.690s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/express/Code/2024-2025-Robot-Code/install/local_setup.sh'
+[2.691s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/express/Code/2024-2025-Robot-Code/install/_local_setup_util_sh.py'
+[2.694s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/express/Code/2024-2025-Robot-Code/install/setup.sh'
+[2.697s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/express/Code/2024-2025-Robot-Code/install/local_setup.bash'
+[2.699s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/express/Code/2024-2025-Robot-Code/install/setup.bash'
+[2.702s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/express/Code/2024-2025-Robot-Code/install/local_setup.zsh'
+[2.703s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/express/Code/2024-2025-Robot-Code/install/setup.zsh'

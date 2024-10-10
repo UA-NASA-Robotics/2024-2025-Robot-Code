@@ -1,0 +1,17 @@
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/controller_turtle.launch.py
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/ps3.config.yaml
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/ament_index/resource_index/package_run_dependencies/RS_Package
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/ament_index/resource_index/parent_prefix_path/RS_Package
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/environment/ament_prefix_path.sh
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/environment/ament_prefix_path.dsv
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/environment/path.sh
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/environment/path.dsv
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/local_setup.bash
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/local_setup.sh
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/local_setup.zsh
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/local_setup.dsv
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/package.dsv
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/ament_index/resource_index/packages/RS_Package
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/cmake/RS_PackageConfig.cmake
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/cmake/RS_PackageConfig-version.cmake
+/home/express/Code/2024-2025-Robot-Code/install/RS_Package/share/RS_Package/package.xml
