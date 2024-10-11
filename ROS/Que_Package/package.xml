@@ -9,6 +9,15 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <!--Replace XXXXX with the type of msg from the "/human_input" topic-->
+  <!--<depend>XXXXX</depend>-->
+  <!--Replace YYYYY with the type of msg from the "/autonomy_input" topic-->
+  <!--<depend>YYYYY</depend>-->
+  <!--Replace ZZZZZ with the desired msg type of "/desired_movement" topic-->
+  <!--<depend>ZZZZZ</depend>-->
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
