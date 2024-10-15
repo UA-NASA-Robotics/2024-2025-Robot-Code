@@ -4,9 +4,14 @@ __Overall:__ for our competition we'd like to implement both human input (PS3 Co
 
 #### The RS Package is built from pre-written ROS packages so far, such as `joy` and `teleop_twist_joy`.
 
-```./run_turtlesim.sh```  => runs joy, teleop_twist_joy, & turtlesim for testing.
+```
+sudo apt update
+sudo apt install ros-humble-topic-tools
+```
 
-```./run.sh``` => (TODO) runs joy & teleop_twist_joy, for publishing to Queue Package.
+```./run.sh --with-turtlesim```  => runs joy, teleop_twist_joy, & turtlesim for testing.
+
+```./run.sh``` => runs joy & teleop_twist_joy, for publishing to Queue Package.
 
 ### Build Code: 
 

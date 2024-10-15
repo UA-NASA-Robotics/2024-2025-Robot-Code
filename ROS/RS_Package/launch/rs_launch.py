@@ -1,4 +1,7 @@
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import os
 
@@ -13,7 +16,17 @@ def generate_launch_description():
     )
     config = os.path.normpath(config)
 
+    use_turtlesim = LaunchConfiguration('use_turtlesim')
+
     return LaunchDescription([
+
+        # Declare the 'use_turtlesim' argument
+        DeclareLaunchArgument(
+            'use_turtlesim',
+            default_value='false',
+            description='Set to "true" to include Turtlesim node'
+        ),
+
         # =========================================================
         # Launch the Turtlesim node (for testing purposes)
         # =========================================================
@@ -21,7 +34,8 @@ def generate_launch_description():
             package='turtlesim',          # ROS package that contains the node
             executable='turtlesim_node',  # The executable to run
             name='turtlesim_node',        # The name to assign to the node
-            output='screen'               # Logs outputs to the screen
+            output='screen',              # Logs outputs to the screen
+            condition=IfCondition(use_turtlesim)
         ),
 
         # =========================================================
@@ -45,11 +59,24 @@ def generate_launch_description():
             executable='teleop_node',     # The executable name
             name='teleop_node',           # The name to assign to the node
             output='screen',              # Logs outputs to the screen
-            parameters=[config],          # Manually define controller parameters
-            remappings=[                  # Remap topic for turtlesim
-                ('/cmd_vel', '/turtle1/cmd_vel')    
-            ]
+            parameters=[config]           # Manually define controller parameters
+        ),
+
+        # Relays cmd_vel to topic turtlesim subscribes to.
+        Node(
+            package='topic_tools',
+            executable='relay',
+            name='cmd_vel_to_turtle1_cmd_vel',
+            arguments=['/cmd_vel', '/turtle1/cmd_vel'],
+            output='screen',
+            condition=IfCondition(use_turtlesim)
+        ),
+
+        # Relays cmd_vel to topic Queue Package subscribes to.
+        Node(
+            package='topic_tools',
+            executable='relay',
+            name='cmd_vel_to_rs_cmd_vel',
+            arguments=['/cmd_vel', '/rs/cmd_vel']
         ),
     ])
-
-# TODO: make sure the turtlesim remapping doesn't interfere with normal run flow.
