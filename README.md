@@ -13,6 +13,6 @@ The ROI repo is installed as a submodule. When cloning the repository, run `git 
 
 Above is a Diagram created using draw.io displaying the desired ROS node diagram. We plan to split the entire code into 4 packages: MCU Package, Qeue Package, Autonomous Package, and RS Package. The purpose of each is explained below.
 1. **MCU Package:** This pacakge sends/receives data to/from the MCU's using ROI. This is what allows us to control the motors.
-2. **Qeue Package:** This package determines whether our movements are based off of autonomous inputs or human/RS inputs. It also holds a qeue for any multi movement commands. For example if someone was to press a button to lower the bucket and move forward, that sequence would be stored here.
+2. **Queue Package:** This package determines whether our movements are based off of autonomous inputs or human/RS inputs. It also holds a qeue for any multi movement commands. For example if someone was to press a button to lower the bucket and move forward, that sequence would be stored here.
 3. **Autonomous:** This package as the name implies is the autonomy. Note that the actual package will have more than one node (as opposed to how it's shown in the diagram). This will be predominately imported packages.
 4. **RS Package:** The RS (or Remote Station) Package takes input from a user and parses them into the ROS dataflow. This will allow human control, which is paramount to testing and if autonomous fails.
