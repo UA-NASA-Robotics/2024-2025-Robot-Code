@@ -4,6 +4,8 @@ from glob import glob
 
 package_name = 'RS_Package'
 
+# Helps build & install w/ "setuptools". 
+# (Similar to CMakeLists.txt for C++)
 setup(
     name=package_name,
     version='0.0.1',

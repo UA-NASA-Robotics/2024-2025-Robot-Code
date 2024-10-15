@@ -25,7 +25,7 @@ def generate_launch_description():
         ),
 
         # =========================================================
-        # Launch the joy_node to read PS3 controller inputs
+        # Launch the joy_node to read controller inputs
         # =========================================================
         Node(
             package='joy',                # ROS package for the joystick node
@@ -39,10 +39,10 @@ def generate_launch_description():
 
         # =========================================================
         # Launch the teleop_nodeto convert joystick inputs to Twist messages
-        # =========================================================
+        # ========I=================================================
         Node(
             package='teleop_twist_joy',   # ROS package that contains the node
-            executable='teleop_node',     # The correct executable name
+            executable='teleop_node',     # The executable name
             name='teleop_node',           # The name to assign to the node
             output='screen',              # Logs outputs to the screen
             parameters=[config],          # Manually define controller parameters

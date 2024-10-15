@@ -1,8 +1,42 @@
 # Remote Station Package (Human Control Input)
 
-For our competition we'd like to implement both human input (PS3 Controller) and autonomous driving to move the robot. "Remote Station" refers to the fact, that the PS3 controller will not be attached to the robot, but rather a laptop.
+__Overall:__ for our competition we'd like to implement both human input (PS3 Controller) and autonomous driving to move the robot. "Remote Station" refers to the fact, that the PS3 controller will not be attached to the robot, but rather a laptop.
 
-#### The RS Package is built from pre-written ROS packages so far, such as `joy` and `teleop_twist_joy`
+#### The RS Package is built from pre-written ROS packages so far, such as `joy` and `teleop_twist_joy`.
+
+```./run_turtlesim.sh```  => runs joy, teleop_twist_joy, & turtlesim for testing.
+
+```./run.sh``` => (TODO) runs joy & teleop_twist_joy, for publishing to Queue Package.
+
+### Build Code: 
+
+Launch files will look for the controller configuration file & run these pre-written packages to create the topics we will want to subscribe to in the Queue package.
+
+#### Related build code is in `./setup.py` `./config/..` & `./launch/..` 
+
+#### `./setup.py` => Package the folder so ROS & Python know where to look for things. 
+
+#### `./launch/..` => Launch files (runs nodes) with parameters and configs.
+
+#### `./config/..` => Config files for YAML, such as for the Joy controller config.
+
+## Desired Movement (RS Package Output):
+
+    ```C++
+    // joy, published by RS package only
+    struct Joy {
+        std::vector<float> axes;        // Not used past priority node.
+        std::vector<int32_t> buttons;   // Used throughout queue package.
+    };
+    
+    // cmd_vel, published by RS & Autonomy
+    struct Twist {
+        Vector3 linear;  // Linear velocity in the x, y, and z directions
+        Vector3 angular;  // Angular velocity (rotary) around the x, y, and z axes
+    };
+    ```
+
+## ROS Community Packages:
 
 #### `/joy` - Takes input from USB Joystick.
 
@@ -48,7 +82,7 @@ For our competition we'd like to implement both human input (PS3 Controller) and
     0   # Right Stick/R3 Button
     ```
 
-#### `/cmd_vel` (from `teleop_twist_joy_node`) - Geometry Message
+#### `/cmd_vel` (from `teleop_twist_joy_node`)
 
 - **Message Type**: `geometry_msgs/Twist`
 - **Description**: Publishes velocity commands for controlling the robot’s movement. This message contains linear and angular velocities in the X, Y, and Z directions.
@@ -103,16 +137,19 @@ In 3D space, an object can rotate around three different axes:
 - **Roll (X-axis rotation)**:  
   Rotation around the X-axis, which runs from front to back of the robot.  
   Imagine the robot tilting side-to-side, similar to how an airplane rolls when one wing dips down and the other rises.  
+  
   In most ground-based robots, roll is typically not used.
 
 - **Pitch (Y-axis rotation)**:  
   Rotation around the Y-axis, which runs from left to right of the robot.  
   This is like nodding your head up and down or the robot tilting forward and backward.  
+  
   Like roll, pitch is not used for movement in most ground-based robots.
 
 - **Yaw (Z-axis rotation)**:  
   Rotation around the Z-axis, which runs vertically through the robot.  
   Yaw is responsible for turning the robot left or right (rotation around its own center, like turning in place).  
+  
   This is commonly used in robots to control turning or steering.
 
 ---
@@ -152,20 +189,3 @@ Linear movement refers to motion along the three axes:
 - **Parameters**:
     - `config_file`: A YAML file that defines how joystick inputs map to robot movement. The `controller.config.yaml` file contains configuration for the controller.
 - **Output**: The node publishes `geometry_msgs/Twist` messages, which describe the linear and angular velocity of the robot (in this case, the turtle). These messages are sent to `/cmd_vel` to control the movement of the turtle in Turtlesim.
-
-
-## Desired Movement (RS Package Output):
-
-    ```C++
-    // joy, published by RS package only
-    struct Joy {
-        std::vector<float> axes;        // Not used past priority node.
-        std::vector<int32_t> buttons;   // Used throughout queue package.
-    };
-
-    // cmd_vel, published by RS & Autonomy
-    struct Twist {
-        Vector3 linear;  // Linear velocity in the x, y, and z directions
-        Vector3 angular;  // Angular velocity (rotation) around the x, y, and z axes
-    };
-    ```
