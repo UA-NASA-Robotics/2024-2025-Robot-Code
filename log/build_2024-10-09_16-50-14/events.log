@@ -1,6 +1,0 @@
-[0.000000] (-) TimerEvent: {}
-[0.000683] (-) JobUnselected: {'identifier': 'Auto_Package'}
-[0.000814] (-) JobUnselected: {'identifier': 'MCU_Package'}
-[0.000899] (-) JobUnselected: {'identifier': 'Que_Package'}
-[0.000963] (-) JobUnselected: {'identifier': 'rs_package'}
-[0.001361] (-) EventReactorShutdown: {}

@@ -15,36 +15,37 @@ For our competition we'd like to implement both human input (PS3 Controller) and
     };
     ```
 
+- **Run Command**: `ros2 run joy joy_node`
+
 - **Key Fields**:
     - `axes`: List of floating-point values representing the positions of the joystick axes (e.g., left stick, right stick).
 
-    ```
-    axes:
-    - 0.0   # left stick,   left is positive
-    - 0.0   # left stick,   up is positive
-    - 1.0   # left trigger  depression
-    - 0.0   # right stick,  left is positive
-    - 0.0   # right stick,  up is positve
-    - 1.0   # right trigger depression
-    - 0.0   # d-pad horiz., left is positive
-    - 0.0   # d-pad vert.,  up is positve
+    ```bas    axes:
+    0.0   # left stick,   left is positive
+    0.0   # left stick,   up is positive
+    1.0   # left trigger  depression
+    0.0   # right stick,  left is positive
+    0.0   # right stick,  up is positve
+    1.0   # right trigger depression
+    0.0   # d-pad horiz., left is positive
+    0.0   # d-pad vert.,  up is positve
     ```
 
     - `buttons`: List of integers representing the state of the buttons (pressed = 1, not pressed = 0).
 
-    ```
+    ```bash
     buttons:
-    - 0   # A/cross button 
-    - 0   # B/circle button
-    - 0   # X/square button
-    - 0   # Y/triangle button
-    - 0   # Left/R1 button
-    - 0   # Right/R1 button
-    - 0   # Select Button
-    - 0   # Start Button
-    - 0   # P3/Home Button
-    - 0   # Left Stick/L3 Button
-    - 0   # Right Stick/R3 Button
+    0   # A/cross button 
+    0   # B/circle button
+    0   # X/square button
+    0   # Y/triangle button
+    0   # Left/R1 button
+    0   # Right/R1 button
+    0   # Select Button
+    0   # Start Button
+    0   # P3/Home Button
+    0   # Left Stick/L3 Button
+    0   # Right Stick/R3 Button
     ```
 
 #### `/cmd_vel` (from `teleop_twist_joy_node`) - Geometry Message
@@ -149,10 +150,8 @@ Linear movement refers to motion along the three axes:
 - **Executable**: `teleop_twist_joy_node`
 - **Purpose**: The `teleop_twist_joy_node` converts joystick input into `Twist` messages. `Twist` messages are used to represent velocity commands for robots.
 - **Parameters**:
-    - `config_file`: A YAML file that defines how joystick inputs map to robot movement. The `ps3.config.yaml` file contains configuration specific to the PS3 controller.
-- **Remappings**:
-    - `/cmd_vel`: Remapped to `/turtle1/cmd_vel` to ensure the velocity commands reach the Turtlesim node.
-- **Output**: The node publishes `geometry_msgs/Twist` messages, which describe the linear and angular velocity of the robot (in this case, the turtle). These messages are sent to `/turtle1/cmd_vel` to control the movement of the turtle in Turtlesim.
+    - `config_file`: A YAML file that defines how joystick inputs map to robot movement. The `controller.config.yaml` file contains configuration for the controller.
+- **Output**: The node publishes `geometry_msgs/Twist` messages, which describe the linear and angular velocity of the robot (in this case, the turtle). These messages are sent to `/cmd_vel` to control the movement of the turtle in Turtlesim.
 
 
 ## Desired Movement (RS Package Output):
