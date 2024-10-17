@@ -9,9 +9,11 @@ sudo apt update
 sudo apt install ros-humble-topic-tools
 ```
 
-```./run.sh --with-turtlesim```  => runs joy, teleop_twist_joy, & turtlesim for testing.
+#### MUST RUN COMMANDS FROM `./ROS/..`, above the package folder!
 
-```./run.sh``` => runs joy & teleop_twist_joy, for publishing to Queue Package.
+```./RS_Package/run.sh --with-turtlesim```  => runs joy, teleop_twist_joy, & turtlesim for testing.
+
+```./RS_Package/run.sh``` => runs joy & teleop_twist_joy, for publishing to Queue Package.
 
 ### Build Code: 
 
