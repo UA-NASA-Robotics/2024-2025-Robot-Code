@@ -38,4 +38,4 @@ fi
 
 # Launch the package with the 'use_turtlesim' argument
 echo "Launching the RS_Package with use_turtlesim: $USE_TURTLESIM"
-ros2 launch RS_Package rs_launch.py use_turtlesim:=$USE_TURTLESIM
+ros2 launch RS_Package rs_launch.py --ros-args -p use_turtlesim:=$USE_TURTLESIM

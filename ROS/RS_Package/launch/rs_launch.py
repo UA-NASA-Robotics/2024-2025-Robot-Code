@@ -53,13 +53,14 @@ def generate_launch_description():
 
         # =========================================================
         # Launch the teleop_nodeto convert joystick inputs to Twist messages
-        # ========I=================================================
+        # ========I================================================
+
         Node(
-            package='teleop_twist_joy',   # ROS package that contains the node
-            executable='teleop_node',     # The executable name
-            name='teleop_node',           # The name to assign to the node
-            output='screen',              # Logs outputs to the screen
-            parameters=[config]           # Manually define controller parameters
+            package='RS_Package',
+            executable='joystick_tracks',
+            name='joystick_control',
+            output='screen',
+            parameters=[config]
         ),
 
         # Relays cmd_vel to topic turtlesim subscribes to.
