@@ -35,6 +35,7 @@ class JoysticksBase(Node, ABC):
 
         self.get_logger().info(f'{node_name} initialized with parameters: {self.params}')
 
+    #gets called everytime a message is received from the /joy topic
     def joy_callback(self, msg):
         twist_msg = self.process_joystick_input(msg)
         if twist_msg:
