@@ -48,13 +48,13 @@ class ControlNode(Node):
         self.node_name_subscriber = self.create_subscription(String, 'output topic MCU - node_name', self.callback_Name, 10)
         self.node_health_subscriber = self.create_subscription(String, 'output topic MCU - node_health', self.callback_Health, 10)
         
-        self.cli = self.create_client(Set_State, 'set_state')                   #create client for Set_State service
-        while not self.cli.wait_for_service(timeout_sec=1.0):                   #wait until service is available
+        self.state_client = self.create_client(Set_State, 'set_state')                   #create client for Set_State service
+        while not self.state_client.wait_for_service(timeout_sec=1.0):                   #wait until service is available
             self.get_logger().info('service not available, waiting again...')
         self.req1 = Set_State.Request()                                         #create request object
         
-        self.cli = self.create_client(Set_Mode, 'set_mode')                     #do again for Set_Mode service
-        while not self.cli.wait_for_service(timeout_sec=1.0):
+        self.mode_client = self.create_client(Set_Mode, 'set_mode')                     #do again for Set_Mode service
+        while not self.mode_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service not available, waiting again...')
         self.req2 = Set_Mode.Request()
         
@@ -156,12 +156,12 @@ class ControlNode(Node):
         self.req1.bottomActuatorPosition = requestInfo[2]
         self.req1.topActuatorPosition = requestInfo[3]
         self.req1.time = requestInfo[5]
-        return self.cli.call_async(self.req1)
+        return self.state_client.call_async(self.req1)
 
     #Create request method for Set_Mode
     def send_mode_request(self):    #can be more parameters, names should match expected in the services
         self.req2.pinModeCode = self.setupPinModeCode
-        return self.cli.call_async(self.req2)
+        return self.mode_client.call_async(self.req2)
 
     #and interperet/use that information
         #unknown what to do with that info at this time. ~Ethan
