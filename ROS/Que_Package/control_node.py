@@ -92,57 +92,53 @@ class ControlNode(Node):
                 return  #stop processing code early
             
             #Macro Name
-            if buttonArray[1] == 1:
+            elif buttonArray[1] == 1:
                 #TODO: Add macro steps to que
                 pass
 
             #Macro Name
-            if buttonArray[2] == 1:
+            elif buttonArray[2] == 1:
                 #TODO: Add macro steps to que
                 pass
 
             #Macro Name
-            if buttonArray[3] == 1:
+            elif buttonArray[3] == 1:
                 #TODO: Add macro steps to que
                 pass
             
             #Macro Name
-            if buttonArray[4] == 1:
+            elif buttonArray[4] == 1:
                 #TODO: Add macro steps to que
                 pass
             
             #Macro Name
-            if buttonArray[5] == 1:
+            elif buttonArray[5] == 1:
                 #TODO: Add macro steps to que
                 pass 
             
             #Macro Name
-            if buttonArray[6] == 1:
+            elif buttonArray[6] == 1:
                 #TODO: Add macro steps to que
                 pass
 
             #Macro Name
-            if buttonArray[7] == 1:
+            elif buttonArray[7] == 1:
                 pass
                                 
             #Setup Pin Mode -- P3 button / Home button
-            if buttonArray[8] == 1:
+            elif buttonArray[8] == 1:
                 send_mode_request(self) #send directly, bypassing que
                 return  #stop early
             
             #Macro Name
-            if buttonArray[9] == 1:
+            elif buttonArray[9] == 1:
                 #TODO: Add macro steps to que
                 pass
             
             #Macro Name
-            if buttonArray[10] == 1:
+            elif buttonArray[10] == 1:
                 #TODO: Add macro steps to que
                 pass
-
-        
-
-        
 
         #pack all the information into 
         self.requestArray = [left]
@@ -153,8 +149,6 @@ class ControlNode(Node):
             send_state_request(self, self.theQue.get())
 
         return 0
-
-
 
     #Create request method for State
     def send_state_request(self, requestInfo):   #can be more parameters, names should match expected in the services
@@ -169,8 +163,6 @@ class ControlNode(Node):
     def send_mode_request(self):    #can be more parameters, names should match expected in the services
         self.req2.pinModeCode = self.setupPinModeCode
         return self.cli.call_async(self.req2)
-    
-
 
     #and interperet/use that information
         #unknown what to do with that info at this time. ~Ethan
@@ -186,8 +178,6 @@ class ControlNode(Node):
         #unknown what to do with that info at this time. ~Ethan
     def callback_Health(self):
         return 0
-    
-
 
 #standard node main function
 def main(args=None):
