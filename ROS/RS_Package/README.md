@@ -8,8 +8,9 @@ __Overall:__ for our competition we'd like to implement both human input (PS3 Co
 sudo apt update
 sudo apt install ros-humble-topic-tools
 ```
+### Start the RS package from the ROS folder above this one, NOT inside the package!
 
-```./run.sh --with-turtlesim```  => runs joy, teleop_twist_joy, & turtlesim for testing.
+```./RS_Package/run.sh --with-turtlesim```  => runs joy, teleop_twist_joy, & turtlesim for testing.
 
 ```./run.sh``` => runs joy & teleop_twist_joy, for publishing to Queue Package.
 

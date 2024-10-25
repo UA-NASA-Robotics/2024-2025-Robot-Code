@@ -4,10 +4,8 @@
   <name>RS_Package</name>
   <version>0.0.1</version>
   <description>Remote Station (RS) Package for Publishing Joystick Inputs</description>
-
-  <maintainer email="author.morgan@saintdenisgraveyards.net">Author Morgan</maintainer>
-  <license>Top Secret</license>
-
+  <license>MIT</license>
+  
   <!-- Build tool dependencies -->
   <buildtool_depend>ament_python</buildtool_depend>
 

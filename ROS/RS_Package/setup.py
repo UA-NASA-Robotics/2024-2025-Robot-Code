@@ -17,10 +17,8 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    author='morgan',
-    author_email='author.morgan@saintdenisgraveyards.net',
     description='Remote Station (RS) Package for Publishing Joystick Inputs',
-    license='Top Secret',
+    license='MIT',
     entry_points={
         'console_scripts': [],
     },
