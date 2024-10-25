@@ -40,14 +40,13 @@ from rs.msg import TwistPlus
         #unknown what to do with that info at this time. ~Ethan
 
 class ControlNode(Node):
-
     #Initialize node and crease subscribers and clients
     def __init__(self):
         super().__init__('control_node')
-        self.subscriber_ = self.create_subscription(TwistPlus, 'output topic from mux_node', self.callback_Input, 10)
-        self.subscriber_ = self.create_subscription(String, 'output topic MCU - current_state', self.callback_State, 10)
-        self.subscriber_ = self.create_subscription(String, 'output topic MCU - node_name', self.callback_Name, 10)
-        self.subscriber_ = self.create_subscription(String, 'output topic MCU - node_health', self.callback_Health, 10)
+        self.mux_subscriber = self.create_subscription(TwistPlus, 'output topic from mux_node', self.callback_Input, 10)
+        self.current_state_subscriber = self.create_subscription(String, 'output topic MCU - current_state', self.callback_State, 10)
+        self.node_name_subscriber = self.create_subscription(String, 'output topic MCU - node_name', self.callback_Name, 10)
+        self.node_health_subscriber = self.create_subscription(String, 'output topic MCU - node_health', self.callback_Health, 10)
         
         self.cli = self.create_client(Set_State, 'set_state')                   #create client for Set_State service
         while not self.cli.wait_for_service(timeout_sec=1.0):                   #wait until service is available
