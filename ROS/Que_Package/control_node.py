@@ -6,6 +6,8 @@ from mcu.srv import Set_Mode
 from mcu.srv import Set_State 
 from rs.msg import TwistPlus
 
+distance_between_wheels = 0.5 #meters
+
 #What control_node should do:
     #Listen to the output topic from mux_node which is a Twist_Plus() type message
     #Twist_Plus includes:
@@ -65,6 +67,13 @@ class ControlNode(Node):
         self.requestArray = [None, None, None, None, None]
         self.theQue = queue.Queue()
     
+    # source https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html#differential-drive-robot
+    #Calculate the RPM of the left and right wheels based on the linear and angular velocities
+    def calculateRPM(self, linearVelocity, angularVelocity):
+        leftVelocity = linearVelocity - (angularVelocity * distance_between_wheels / 2)
+        rightVelocity = linearVelocity + (angularVelocity * distance_between_wheels / 2)
+        return leftVelocity, rightVelocity
+
     #Interperet the Twist_Plus to make a service request to the MCU package
         #On startup call the "Set Mode" service -- This will be a macro
         #Check to see if a button/macro is pressed/called
@@ -139,13 +148,16 @@ class ControlNode(Node):
                 #TODO: Add macro steps to que
                 pass
 
-        #pack all the information into 
+        #pack all the information into
+        # What is "left" in this context? ~Elia
         self.requestArray = [left]
         self.theQue.put(self.requestArray)
 
         #if the que is not empty, make request
         if not self.theQue.empty():
             send_state_request(self, self.theQue.get())
+
+        LeftWheels, RightWheels = calculateRPM(self.forwardVelocity, self.angularVelocity)
 
         return 0
 
