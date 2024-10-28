@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'RS_Package'
+package_name = 'rs_package'
 
 # Helps build & install w/ "setuptools". 
 # (Similar to CMakeLists.txt for C++)
@@ -14,6 +14,7 @@ setup(
         # Find/Install launch & config files on your system.
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
+        ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
