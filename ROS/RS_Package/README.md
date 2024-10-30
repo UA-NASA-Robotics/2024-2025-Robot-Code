@@ -1,5 +1,5 @@
-# Queue Package
-The Queue Package takes in the topic `RS/twist_plus` from the RS Package and `Auto/twist_plus` from the Autonomous package. It then uses the **Priority Node** to determine which topic should be pushed onto the **Control Queue Node**. The **Control Queue Node** will prep the topics for the MCU Package, breaking down any buttons/macros into discrete actions
+# Remote Station Package
+The Remote Station Package will take in input from a controller
 
 ## Topics
 ### `RS/twist_plus`, `Auto/twist_plus`, `Control/twist_plus`
