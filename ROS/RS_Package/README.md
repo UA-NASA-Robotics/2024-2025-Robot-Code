@@ -1,20 +1,15 @@
 # Remote Station Package
-The Remote Station Package will take in input from a controller
+The Remote Station Package will take in input from a controller and then convert those inputs into an angular and linear velocity.
 
 ## Topics
-### `RS/twist_plus`, `Auto/twist_plus`, `Control/twist_plus`
-**From:** RS/RS_Node, Auto/ , Queue/MUX_Node  
-**Contains:** This topic contains the desired linear and angular velocity, as well as the buttons/macros. The RS comes from the RS Package, the Auto comes from the Autonomous Package, and Control is the twist coming from the MUX Node (i.e. which ever twist is the one we're listening to).
+### `RS/twist_plus`
+**From:** RS/RS_Node,
+**Contains:** This topic contains the desired linear and angular velocity, as well as the buttons/macros.
 
 >Note: This needs to be filled out with the topics coming from MCU package
 
 ## Nodes
-### MUX_Node
-**Input:** `RS/twist_plus`, `Auto/twist_plus`  
-**Output:** `Control/twist_plus`  
-**Abstract:** The MUX node will choose whether we are listening from inputs from autonomous or RS. It will switch to the RS if any non-zero value is given, and only switch to auto if a command is given from the controller.
-
-### Control_Node
-**Input:** `Control/twist_plus`  
-**Output:**  `Control/Set_Torque`, `Control/Set_Velocity`, `Control/Absolute_Position`, `Control/Relative_Position`  
-**Abstract:** The Control Node will take macros/buttons/joystick-values from the twist_plus topic and break that down into discrete movements. These movements/macros will enter a queue where each movement is passed onto the MCU Package. The queue will be cleared/interrupted from any updated to the twist_plus topic. If no macros are selected, it will simply take the desired velocities/desire_position/torque and pass that to MCU Package.  
+### RS Node
+**Input:** Values from a Joystick
+**Output:** `RS/twist_plus`  
+**Abstract:** This node inputs values using the JOY package, this then is converted into `RS/twist_plus`. The math is fairly simple and can be found in the [ROS documentation](https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html) under the differential drive section. 
