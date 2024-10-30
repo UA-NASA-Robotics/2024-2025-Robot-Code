@@ -12,7 +12,10 @@ setup(
     packages=[package_name],
     data_files=[
         # Find/Install launch & config files on your system.
-        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
         ('share/' + package_name, ['package.xml']),
     ],
