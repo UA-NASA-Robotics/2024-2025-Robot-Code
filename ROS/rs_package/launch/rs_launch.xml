@@ -29,9 +29,15 @@
                 change it to twist topic for turtle
                 Load parameter file in configs
             -->
-            <node pkg="teleop_twist_joy" exec="teleop_node" name="controller_interpreter">
+            <node pkg="rs_package" exec="skid_steer" name="controller_interpreter">
                 <remap from="/joy" to="/rs/joy"/>
+                <remap from="/twist_plus" to="/rs/twist_plus"/>
+            </node>
+
+            <node pkg="rs_package" exec="separate_twistplus" name="shit">
+                <remap from="/twist_plus" to="/rs/twist_plus"/>
                 <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
+                <remap from="/buttons" to="/rs/buttons"/>
             </node>
 
         </group> <!-- use_turtlesim -->

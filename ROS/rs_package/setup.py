@@ -23,6 +23,9 @@ setup(
     description='Remote Station (RS) Package for Publishing Joystick Inputs',
     license='MIT',
     entry_points={
-        'console_scripts': [],
+        'console_scripts': [
+            "skid_steer = rs_package.skid_steer:main",
+            "separate_twistplus = rs_package.twist_plus_separation:main"
+        ],
     },
 )
