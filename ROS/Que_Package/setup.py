@@ -20,7 +20,12 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'control_node = que_pkg.control_node:main'
+            'control_node = que_pkg.control_node:main' #old, still here for references, will be deleted
+            'mux_control = que_pkg.mux_control:main'
+            'fifo_queue = que_pkg.fifo_queue:main'
+            'macro_lut = que_pkg.macro_lut:main'
+            'request_handler = que_pkg.request_handler:main'
+            'feedback_processor = que_pkg.feedback_processor:main'
         ],
     },
 )
