@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'que_pkg'
+package_name = 'que_package'
 
 setup(
     name=package_name,
@@ -20,12 +20,12 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'control_node = que_pkg.control_node:main' #old, still here for references, will be deleted
-            'mux_control = que_pkg.mux_control:main'
-            'fifo_queue = que_pkg.fifo_queue:main'
-            'macro_lut = que_pkg.macro_lut:main'
-            'request_handler = que_pkg.request_handler:main'
-            'feedback_processor = que_pkg.feedback_processor:main'
+            'control_node = que_package.control_node:main' #old, still here for references, will be deleted
+            'mux_control = que_package.mux_control:main'
+            'fifo_queue = que_package.fifo_queue:main'
+            'macro_lut = que_package.macro_lut:main'
+            'request_handler = que_package.request_handler:main'
+            'feedback_processor = que_package.feedback_processor:main'
         ],
     },
 )

@@ -11,7 +11,8 @@
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
-  <test_depend>topic_tools</test_depend>
+  <test_depend>topic_tools</test_depend>    <!--For mux_node and related services-->
+  <!--Add interfaces package-->
   <!--Add the MCU, RS, and AUTO packages as dependencies-->
 
   <export>
