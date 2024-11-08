@@ -1,2 +1,6 @@
 ROI/*
 ROI
+.vscode/
+build/
+install/
+log/
