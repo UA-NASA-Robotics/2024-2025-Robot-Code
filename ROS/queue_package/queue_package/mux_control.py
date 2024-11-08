@@ -8,7 +8,7 @@ class MuxControl(Node):
     def __init__(self):
         super().__init__('mux_control')
 
-        #create subscriber listening to output from RS_package
+        #create subscriber listening to output from rs_package
         self.mux_subscriber = self.create_subscription(TwistPlus, '/rs/cmd_vel', self.callbackChangeMux, 10)
         
         #create a client to execute the switch_mux service

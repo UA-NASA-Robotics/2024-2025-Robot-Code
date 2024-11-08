@@ -56,7 +56,7 @@ def generate_launch_description():
         # ========I================================================
 
         Node(
-            package='RS_Package',
+            package='rs_package',
             executable='joystick_tracks',
             name='joystick_control',
             output='screen',

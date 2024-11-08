@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from glob import glob
 import os
 
-package_name = 'RS_Package'
+package_name = 'rs_package'
 
 setup(
     name=package_name,
@@ -23,7 +23,7 @@ setup(
     license='Top Secret',
     entry_points={
         'console_scripts': [
-            'joystick_tracks = RS_Package:main',  # This links to the `main` function in RS_Package/__init__.py
+            'joystick_tracks = rs_package:main',  # This links to the `main` function in rs_package/__init__.py
         ],
     },
 )
