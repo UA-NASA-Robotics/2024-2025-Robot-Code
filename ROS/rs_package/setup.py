@@ -1,19 +1,19 @@
-from setuptools import setup, find_packages
-from glob import glob
+from setuptools import setup
 import os
+from glob import glob
 
-package_name = 'rs_package'
+package_name = 'RS_Package'
 
+# Helps build & install w/ "setuptools". 
+# (Similar to CMakeLists.txt for C++)
 setup(
     name=package_name,
     version='0.0.1',
-    packages=find_packages(),
+    packages=[package_name],
     data_files=[
-        # Install configuration files to be used by ROS
+        # Find/Install launch & config files on your system.
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
-        (os.path.join('share', 'ament_index', 'resource_index', 'packages'), [f'{package_name}']),
-        (os.path.join('share', package_name), ['package.xml']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -22,8 +22,6 @@ setup(
     description='Remote Station (RS) Package for Publishing Joystick Inputs',
     license='Top Secret',
     entry_points={
-        'console_scripts': [
-            'joystick_tracks = rs_package:main',  # This links to the `main` function in rs_package/__init__.py
-        ],
+        'console_scripts': [],
     },
 )
