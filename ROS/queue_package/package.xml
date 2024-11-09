@@ -2,18 +2,16 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>queue_package</name>
-  <version>0.0.1</version>
+  <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="162376649+Piglet337@users.noreply.github.com">Ethan</maintainer>
-  <license>Apache-2.0</license>
+  <maintainer email="root@todo.todo">root</maintainer>
+  <license>apache-2.0</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
-  <test_depend>topic_tools</test_depend>    <!--For mux_node and related services-->
-  <!--Add interfaces package-->
-  <!--Add the MCU, RS, and AUTO packages as dependencies-->
+  <build_depend>interfaces</build_depend>
 
   <export>
     <build_type>ament_python</build_type>
