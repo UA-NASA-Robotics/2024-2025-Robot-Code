@@ -26,21 +26,21 @@ class ControllerInterpreter(Node):
             '',                 # Right Trigger (R2)
         ]
         button_map = [
-            'autonomy_enable',  # A (X)
-            '',                 # B (◯)
-            '',                 # X (□)
-            '',                 # Y (△)
-            '',                 # Menu
-            '',                 # Home
-            '',                 # Start
-            '',                 # Left Stick
-            '',                 # Right Stick
-            '',                 # Left Bumper (L1)
-            '',                 # Right Bumper (R1)
-            '',                 # D-Pad Up
-            '',                 # D-Pad Down
-            '',                 # D-Pad Left
-            '',                 # D-Pad Right
+            'control_autonomy_enable',  # A (X)
+            '',                         # B (◯)
+            '',                         # X (□)
+            '',                         # Y (△)
+            '',                         # Menu
+            '',                         # Home
+            '',                         # Start
+            '',                         # Left Stick
+            '',                         # Right Stick
+            '',                         # Left Bumper (L1)
+            '',                         # Right Bumper (R1)
+            '',                         # D-Pad Up
+            '',                         # D-Pad Down
+            '',                         # D-Pad Left
+            '',                         # D-Pad Right
         ]
 
         # Don't send many null packets (reduce bandwidth usage)
@@ -112,9 +112,14 @@ class ControllerInterpreter(Node):
     # Prepares Button part of TwistPlus
     def set_buttons(self, input: Joy, output: TwistPlus, 
                     buttons: list[str]) -> TwistPlus:
-        # TODO: implement a better way than setting buttons one at a time
-        output.buttons.autonomy_enable = input.buttons[buttons.index('autonomy_enable')] == 1
-
+        # Loop through all button mappings
+        for button_name in buttons:
+            if button_name:  # Skip empty mappings
+                # Construct the full variable name
+                full_button_name = f'button_{button_name}'
+                # Set the button state using dynamic attribute access
+                setattr(output.buttons, full_button_name, 
+                        input.buttons[buttons.index(button_name)] == 1)
         return output
     
     # Goes through every element in the Joy topic (other than timing)
@@ -124,8 +129,11 @@ class ControllerInterpreter(Node):
             for j in [i.x, i.y, i.z]:
                 if abs(j) >= 0.05:
                     return False
-        if msg.buttons.autonomy_enable:
-            return False
+        # Check all button attributes
+        for attr in dir(msg.buttons):
+            if attr.startswith('button_'):  # Only check button states
+                if getattr(msg.buttons, attr):
+                    return False
         return True
 
 def main(args=None):
