@@ -30,8 +30,10 @@ class SeparateTwistPlus(Node):
 
         twist_output.linear.x = msg.linear.x
         twist_output.angular.z = msg.angular.z
-        
-        button_output.autonomy_enable = msg.buttons.autonomy_enable
+
+        for attr in dir(msg.buttons):
+            if attr.startswith("button_"):
+                setattr(button_output, attr, getattr(msg.buttons, attr))
 
         self.cmd_vel_publisher.publish(twist_output)
         self.buttons_publisher.publish(button_output)
