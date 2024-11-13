@@ -1,0 +1,19 @@
+<launch>
+    <group>
+        <node pkg="queue_package" 
+            exec="request_handler" 
+            name="request_handler" 
+            output="screen">
+            <remap from="/input1" to="/rs/twist_plus"/>
+            <remap from="/input2" to="/autonomy/twist_plus"/>
+            <remap from="/output" to="/twist_plus"/>
+        </node>
+
+        <node pkg="rs_package"
+            exec="separate_twistplus"
+            name="separate_twistplus"
+            output="screen">
+            <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
+        </node>
+    </group>
+</launch>

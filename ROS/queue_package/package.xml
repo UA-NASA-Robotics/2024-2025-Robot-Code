@@ -13,6 +13,8 @@
   <test_depend>python3-pytest</test_depend>
   <build_depend>interfaces</build_depend>
 
+  <exec_depend>rs_package</exec_depend>
+
   <export>
     <build_type>ament_python</build_type>
   </export>
