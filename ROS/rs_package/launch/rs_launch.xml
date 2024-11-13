@@ -50,9 +50,9 @@
                 Take the input from the controller
                 change it to twist topic for robot
             -->
-            <node pkg="teleop_twist_joy" exec="teleop_node" name="controller_interpreter">
+            <node pkg="rs_package" exec="skid_steer" name="controller_interpreter">
                 <remap from="/joy" to="/rs/joy"/>
-                <remap from="/cmd_vel" to="/rs/cmd_vel"/>
+                <remap from="/twist_plus" to="/rs/twist_plus"/>
             </node>
         </group> <!-- !use_turtlesim -->
 
