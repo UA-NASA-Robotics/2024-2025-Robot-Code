@@ -1,8 +1,8 @@
 <launch>
     <group>
         <node pkg="queue_package" 
-            exec="request_handler" 
-            name="request_handler" 
+            exec="mux_control" 
+            name="mux_control" 
             output="screen">
             <remap from="/input1" to="/rs/twist_plus"/>
             <remap from="/input2" to="/autonomy/twist_plus"/>

@@ -27,7 +27,6 @@ setup(
             'mux_control = queue_package.mux_control:main',
             'fifo_queue = queue_package.fifo_queue:main',
             'macro_lut = queue_package.macro_lut:main',
-            'request_handler = queue_package.request_handler:main',
             'feedback_processor = queue_package.feedback_processor:main',
         ],
     },
