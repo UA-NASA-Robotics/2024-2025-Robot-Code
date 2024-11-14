@@ -71,6 +71,7 @@ class ControllerInterpreter(Node):
         output = TwistPlus()
 
         # Set both parts of TwistPlus message
+        # SET TWIST MUST BE CALLED FIRST
         self.set_twist(msg, output, axes_parameters, wheel_radius, wheel_separation)
         self.set_buttons(msg, output, button_parameters)
 
@@ -112,6 +113,8 @@ class ControllerInterpreter(Node):
     # Prepares Button part of TwistPlus
     def set_buttons(self, input: Joy, output: TwistPlus, 
                     buttons: list[str]) -> TwistPlus:
+        setattr(output.buttons, 'button_wheels_is_moving', not self.test_null(output))
+
         # Loop through all button mappings
         for button_name in buttons:
             if button_name:  # Skip empty mappings
