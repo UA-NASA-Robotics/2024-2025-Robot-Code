@@ -117,8 +117,9 @@ class ControllerInterpreter(Node):
             if button_name:  # Skip empty mappings
                 # Construct the full variable name
                 full_button_name = f'button_{button_name}'
-                # Set the button state using dynamic attribute access
-                setattr(output.buttons, full_button_name, 
+                if hasattr(output.buttons, full_button_name):
+                    # Set the button state using dynamic attribute access
+                    setattr(output.buttons, full_button_name, 
                         input.buttons[buttons.index(button_name)] == 1)
         return output
     
