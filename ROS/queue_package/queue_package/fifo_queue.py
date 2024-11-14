@@ -10,15 +10,15 @@ class FifoQueue(Node):
 
     def enqueue(self, item):
         self.queue.put(item)
-        self.get_logger().info(f'Item {item} enqueued')
+        # self.get_logger().info(f'Item {item} enqueued')
 
     def dequeue(self):
         if not self.queue.empty():
             item = self.queue.get()
-            self.get_logger().info(f'Item {item} dequeued')
+            # self.get_logger().info(f'Item {item} dequeued')
             return item
         else:
-            self.get_logger().info('Queue is empty')
+            # self.get_logger().info('Queue is empty')
             return None
 
 def main(args=None):
