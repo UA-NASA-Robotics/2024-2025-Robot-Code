@@ -34,7 +34,7 @@
                 <remap from="/twist_plus" to="/rs/twist_plus"/>
             </node>
 
-            <node pkg="rs_package" exec="separate_twistplus" name="shit">
+                <node pkg="rs_package" exec="separate_twistplus" name="twist_separator">
                 <remap from="/twist_plus" to="/rs/twist_plus"/>
                 <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
                 <remap from="/buttons" to="/rs/buttons"/>
