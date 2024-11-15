@@ -36,7 +36,7 @@ class RequestHandler(Node):
         # Create publisher for the output topic
         self.publisher = self.create_publisher(
             TwistPlus,
-            '/output',
+            '/MuxOutput',
             10)
             
         # Variable to track which input to use (1 or 2)

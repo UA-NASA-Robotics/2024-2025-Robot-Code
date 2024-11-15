@@ -1,3 +1,6 @@
+"""
+WE'RE THINKING OF DELETING THIS NODE
+"""
 import rclpy
 from rclpy.node import Node
 import queue

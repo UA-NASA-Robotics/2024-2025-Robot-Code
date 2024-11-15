@@ -19,11 +19,6 @@ class MacroLut(Node):
     def __init__(self):
         super().__init__('macro_lut')
 
-        self.isControlRunning = False
-        self.isActuatorsRunning = False
-        self.isWheelsRunning = False
-        self.isArmRunning = False
-        self.isPitchRunning = False
 
 def main(args=None):
     rclpy.init(args=args)
