@@ -5,6 +5,14 @@ This node is used to keep track of all running macros and detect if there's any 
 import rclpy
 from rclpy.node import Node
 
+class TreeNode:
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+
+    def add_child(self, child_node):
+        self.children.append(child_node)
+
 """
 @TODO
 This class has a tree with different macro dependencies
@@ -15,9 +23,20 @@ Control
     |   └── pitch
     └── Wheels
 """
-class conflictTree:
+class ConflictTree:
     def __init__(self):
-        return 0
+        self.root = TreeNode('Control')
+
+        actuators = TreeNode('Actuators')
+        arm = TreeNode('arm')
+        pitch = TreeNode('pitch')
+        actuators.add_child(arm)
+        actuators.add_child(pitch)
+
+        wheels = TreeNode('Wheels')
+
+        self.root.add_child(actuators)
+        self.root.add_child(wheels)
 
 
 class MacroConflicts(Node):
