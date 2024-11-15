@@ -3,7 +3,6 @@ from rclpy.node import Node
 
 from interfaces.msg import TwistPlus
 
-
 class RequestHandler(Node):
     """!
     @brief A ROS2 node that handles switching between two input sources based on specific conditions.
