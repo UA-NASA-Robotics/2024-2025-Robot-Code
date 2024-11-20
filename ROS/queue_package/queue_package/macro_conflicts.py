@@ -51,13 +51,13 @@ class MacroConflicts(Node):
         self.isPitchRunning = False
 
     self.MuxInput = self.create_subscription(
-            TwistPlus,
-            '/MuxOutput',
-            10)
+        TwistPlus,
+        '/input',
+        10)
 
     self.publisher = self.create_publisher(
         TwistPlus,
-        '/MacroConflicts',
+        '/output',
         10)
 
     # Checks if input is conflicting with anything
