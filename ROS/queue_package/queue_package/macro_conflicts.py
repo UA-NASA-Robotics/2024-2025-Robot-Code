@@ -50,15 +50,15 @@ class MacroConflicts(Node):
         self.isArmRunning = False
         self.isPitchRunning = False
 
-    self.MuxInput = self.create_subscription(
-        TwistPlus,
-        '/input',
-        10)
+        self.MuxInput = self.create_subscription(
+            TwistPlus,
+            '/input',
+            10)
 
-    self.publisher = self.create_publisher(
-        TwistPlus,
-        '/output',
-        10)
+        self.publisher = self.create_publisher(
+            TwistPlus,
+            '/output',
+            10)
 
     # Checks if input is conflicting with anything
     def isConflict(macro):
