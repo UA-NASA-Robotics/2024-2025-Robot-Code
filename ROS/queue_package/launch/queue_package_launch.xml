@@ -1,19 +1,32 @@
 <launch>
-    <group>
-        <node pkg="queue_package" 
-            exec="mux_control" 
-            name="mux_control" 
-            output="screen">
-            <remap from="/input1" to="/rs/twist_plus"/>
-            <remap from="/input2" to="/autonomy/twist_plus"/>
-            <remap from="/output" to="/twist_plus"/>
-        </node>
+    <arg name="use_turtlesim" default="false"/>
 
-        <node pkg="rs_package"
-            exec="separate_twistplus"
-            name="separate_twistplus"
-            output="screen">
-            <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
-        </node>
+    <group>
+        <group>
+            <node pkg="queue_package" 
+                exec="mux_control" 
+                name="mux_control" 
+                output="screen">
+                <remap from="/input1" to="/rs/twist_plus"/>
+                <remap from="/input2" to="/autonomy/twist_plus"/>
+                <remap from="/output" to="/twist_plus"/>
+            </node>
+        </group>
+
+        <group if="$(var use_turtlesim)">
+            <node pkg="rs_package"
+                exec="separate_twistplus"
+                name="separate_twistplus"
+                output="screen">
+                <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
+            </node>
+
+            <node pkg="rs_package"
+                exec="separate_twistplus"
+                name="separate_twistplus"
+                output="screen">
+                <remap from="/cmd_vel" to="/output/cmd_vel"/>
+            </node>
+        </group>
     </group>
 </launch>
