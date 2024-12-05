@@ -106,6 +106,11 @@ class ControllerInterpreter(Node):
         output.linear.y, output.linear.z = 0.0, 0.0
         output.angular.x, output.angular.y = 0.0, 0.0
 
+        if output.linear.x != 0.0 or output.angular.z != 0.0:
+            output.buttons.button_wheel_ismoving = True
+        else:
+            output.buttons.button_wheel_ismoving = False
+
         # Return the output
         return output
 

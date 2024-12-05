@@ -28,6 +28,7 @@ setup(
             'fifo_queue = queue_package.fifo_queue:main',
             'macro_lut = queue_package.macro_lut:main',
             'feedback_processor = queue_package.feedback_processor:main',
+            'macro_conflicts = queue_package.macro_conflicts:main',
         ],
     },
 ) 
