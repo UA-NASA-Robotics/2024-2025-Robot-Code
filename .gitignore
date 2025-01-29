@@ -4,3 +4,4 @@ ROI
 build/
 install/
 log/
+*.pyc
