@@ -1,5 +1,5 @@
 # Contains all buttons needed
-bool button_autonomy_enable
+bool button_control_autonomyenable
 bool button_actuator_pitch_up
 bool button_actuator_pitch_down
 bool button_actuator_pitch_stop
