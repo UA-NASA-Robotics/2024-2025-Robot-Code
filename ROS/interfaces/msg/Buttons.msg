@@ -1,2 +1,9 @@
 # Contains all buttons needed
-bool autonomy_enable
+bool button_autonomy_enable
+bool button_actuator_pitch_up
+bool button_actuator_pitch_down
+bool button_actuator_pitch_stop
+bool button_actuator_arm_up
+bool button_actuator_arm_down
+bool button_actuator_arm_stop
+bool button_wheels_ismoving
