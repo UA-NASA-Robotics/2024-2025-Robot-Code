@@ -1,2 +1,3 @@
 # Contains all buttons needed
-bool autonomy_enable
+bool button_autonomy_enable
+bool button_wheels_ismoving

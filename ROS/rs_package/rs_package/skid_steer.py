@@ -100,7 +100,7 @@ class ControllerInterpreter(Node):
         
         # Formula was derrived from the opposite (take linear and angular to left and right percent)
         if abs(left_percent) >= 0.05 or abs(right_percent) >= 0.05:
-            setattr(output.buttons, 'button_weels_ismoving', True)
+            setattr(output.buttons, 'button_wheels_ismoving', True)
             output.linear.x = (left_percent + right_percent) * wheel_radius / 2
             output.angular.z = 2 * (output.linear.x - left_percent * wheel_radius) / wheel_separation
 
@@ -128,9 +128,8 @@ class ControllerInterpreter(Node):
     # Goes through every element in the Joy topic (other than timing)
     # Returns False if something is not 0, otherwise returns true
     def test_null(self, msg: TwistPlus) -> bool:
-        for item in [item[1:] for item in msg.buttons.__slots__ if 'button' in item]:
-            if getattr(msg.buttons, item):
-                return False
+        if any([getattr(msg.buttons, item[1:]) for item in msg.buttons.__slots__ if 'button' in item]):
+            return False
         return True
 
 def main(args=None):
