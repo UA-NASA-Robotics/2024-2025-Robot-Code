@@ -7,3 +7,4 @@ bool button_actuator_arm_up
 bool button_actuator_arm_down
 bool button_actuator_arm_stop
 bool button_wheels_ismoving
+bool button_stopall
