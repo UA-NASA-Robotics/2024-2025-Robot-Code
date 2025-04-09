@@ -8,11 +8,12 @@ __Overall:__ for our competition we'd like to implement both human input (PS3 Co
 sudo apt update
 sudo apt install ros-humble-topic-tools
 ```
-### Start the RS package from the ROS folder above this one, NOT inside the package!
+### Running rs_package
+Once built open up a terminal and type the following
 
-```./RS_Package/run.sh --with-turtlesim```  => runs joy, teleop_twist_joy, & turtlesim for testing.
+```ros2 launch rs_package rs_launch.xml```  => runs joy, teleop_twist_joy
 
-```./run.sh``` => runs joy & teleop_twist_joy, for publishing to Queue Package.
+```ros2 launch rs_package rs_launch.xml use_turtlesim:=1``` => runs joyt, teleop_twist_joy, and turtlesim for testing
 
 ### Build Code: 
 
