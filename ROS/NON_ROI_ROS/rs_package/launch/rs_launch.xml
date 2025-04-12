@@ -1,0 +1,60 @@
+<launch>
+    <!-- Arguments go here -->
+    <arg name="use_turtlesim" default="false"/>
+
+    <!-- root node -->
+    <group>
+
+        <!-- Always run -->
+        <group>
+            <!-- 
+                Read input from controller
+                Publish to a topic
+            -->
+            <node pkg="joy" exec="game_controller_node" name="reader">
+                <remap from="/joy" to="/rs/joy"/>
+            </node>
+        </group>
+
+
+        <!-- If using turtle sim -->
+        <group if="$(var use_turtlesim)">
+            <!-- 
+                Start turtlesim for testing purposes
+            -->
+            <node pkg="turtlesim" exec="turtlesim_node" name="sim"/>
+
+            <!--
+                Take the input from the controller
+                change it to twist topic for turtle
+                Load parameter file in configs
+            -->
+            <node pkg="rs_package" exec="skid_steer" name="controller_interpreter">
+                <remap from="/joy" to="/rs/joy"/>
+                <remap from="/twist_plus" to="/rs/twist_plus"/>
+            </node>
+
+                <node pkg="rs_package" exec="separate_twistplus" name="twist_separator">
+                <remap from="/twist_plus" to="/rs/twist_plus"/>
+                <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
+                <remap from="/buttons" to="/rs/buttons"/>
+            </node>
+
+        </group> <!-- use_turtlesim -->
+
+
+        <!-- Not using turtlesim -->
+        <group unless="$(var use_turtlesim)">
+
+            <!--
+                Take the input from the controller
+                change it to twist topic for robot
+            -->
+            <node pkg="rs_package" exec="skid_steer" name="controller_interpreter">
+                <remap from="/joy" to="/rs/joy"/>
+                <remap from="/twist_plus" to="/rs/twist_plus"/>
+            </node>
+        </group> <!-- !use_turtlesim -->
+
+    </group> <!-- root node -->
+</launch>
