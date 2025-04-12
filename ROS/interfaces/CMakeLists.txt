@@ -28,6 +28,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Vector3.msg"
   "msg/Buttons.msg"
   "msg/TwistPlus.msg"
+  "srv/ODriveSetVelocity.srv"
 )
 
 ament_package()

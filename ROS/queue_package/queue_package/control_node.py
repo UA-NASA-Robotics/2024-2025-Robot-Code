@@ -2,9 +2,8 @@ import rclpy
 from rclpy.node import Node
 import queue
 from std_msgs.msg import String
-from mcu.srv import Set_Mode 
-from mcu.srv import Set_State 
-from rs.msg import TwistPlus
+from interfaces.msg import TwistPlus
+from interfaces.srv import ODriveSetVelocity
 
 distance_between_wheels = 0.5 #meters
 
@@ -45,34 +44,50 @@ class ControlNode(Node):
     #Initialize node and crease subscribers and clients
     def __init__(self):
         super().__init__('control_node')
-        self.mux_subscriber = self.create_subscription(TwistPlus, 'output topic from mux_node', self.callback_Input, 10)
-        self.current_state_subscriber = self.create_subscription(String, 'output topic MCU - current_state', self.callback_State, 10)
-        self.node_name_subscriber = self.create_subscription(String, 'output topic MCU - node_name', self.callback_Name, 10)
-        self.node_health_subscriber = self.create_subscription(String, 'output topic MCU - node_health', self.callback_Health, 10)
+
+        self.mux_subscriber = self.create_subscription(TwistPlus, 'macro_twist_plus', self.twist_callback, 10) # Rename 'macro_twist_plus in launch file
+        #self.active_macros = self.create_subscription(ActiveMacros, 'active_macros', self.macro_callback, 10)
+
+        self.set_left_1_client = self.create_client(ODriveSetVelocity, 'set_velocity/left_one')
+        self.set_left_2_client = self.create_client(ODriveSetVelocity, 'set_velocity/left_two')
+        self.set_right_1_client = self.create_client(ODriveSetVelocity, 'set_velocity/right_one')
+        self.set_right_2_client = self.create_client(ODriveSetVelocity, 'set_velocity/right_two')
+
         
-        self.state_client = self.create_client(Set_State, 'set_state')                   #create client for Set_State service
-        while not self.state_client.wait_for_service(timeout_sec=1.0):                   #wait until service is available
-            self.get_logger().info('service not available, waiting again...')
-        self.req1 = Set_State.Request()                                         #create request object
-        
-        self.mode_client = self.create_client(Set_Mode, 'set_mode')                     #do again for Set_Mode service
-        while not self.mode_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
-        self.req2 = Set_Mode.Request()
-        
-        self.setupPinModeCode = [0]     #Define the setup code as an array of values to pass into in the set_mode service
         self.forwardVelocity = None
         self.angularVelocity = None
         self.buttonArray = None
         self.requestArray = [None, None, None, None, None]
         self.theQue = queue.Queue()
+        self.left_wheel_speed = None
+        self.right_wheel_speed = None
     
     # source https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html#differential-drive-robot
     #Calculate the RPM of the left and right wheels based on the linear and angular velocities
     def calculateRPM(self, linearVelocity, angularVelocity):
-        leftVelocity = linearVelocity - (angularVelocity * distance_between_wheels / 2)
-        rightVelocity = linearVelocity + (angularVelocity * distance_between_wheels / 2)
+        leftVelocity = linearVelocity - (angularVelocity * distance_between_wheels / 2)/60
+        rightVelocity = linearVelocity + (angularVelocity * distance_between_wheels / 2)/60
         return leftVelocity, rightVelocity
+    
+    # Sends service request to all 4 wheel servers
+    def request_set_velocity(self):
+        left_message = ODriveSetVelocity.Request()
+        right_message = ODriveSetVelocity.Request()
+
+        # Set Left side speed and torque
+        left_message.ODriveSetVelocity.velocity = self.left_wheel_speed
+        left_message.ODriveSetVelocity.torque_feedforward = 0
+
+        # Set Right side speed and torque
+        right_message.ODriveSetVelocity.velocity = self.right_wheel_speed
+        right_message.ODriveSetVelocity.torque_feedforward = 0
+
+        # Send request to server, and don't hold up waiting for response
+        left_future1 = self.set_left_1_client.call_async(left_message)
+        left_future2 = self.set_left_2_client.call_async(left_message)
+
+        right_future1 = self.set_left_1_client.call_async(right_message)
+        right_future2 = self.set_left_2_client.call_async(right_message)
 
     #Interperet the Twist_Plus to make a service request to the MCU package
         #On startup call the "Set Mode" service -- This will be a macro
@@ -82,12 +97,7 @@ class ControlNode(Node):
                 #continue to velocity translations unless macro says to wait
         #otherwise translate the linear.x (forwards velocity from -1 to 1?) and angular.z 
         #(rotational velocity from w_min to w_max) into Left and Right motor RPMs/desired velocities    
-    def callback_Input(self, msg):
-        
-        #update self variables
-        self.buttonArray = msg.buttons
-        self.forwardVelocity = msg.linear.x
-        self.angularVelocity = msg.angular.z
+    def macro_callback(self, msg):
 
         #if any controller button is pressed
         if 1.0 in self.buttonArray:
@@ -154,41 +164,20 @@ class ControlNode(Node):
         self.theQue.put(self.requestArray)
 
         #if the que is not empty, make request
-        if not self.theQue.empty():
-            send_state_request(self, self.theQue.get())
+        #if not self.theQue.empty():
+        #    send_state_request(self, self.theQue.get())
 
-        LeftWheels, RightWheels = calculateRPM(self.forwardVelocity, self.angularVelocity)
+        self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM(self.forwardVelocity, self.angularVelocity)
+        self.request_set_velocity(self.Leftwheels, self.rightWheels)
 
-        return 0
-
-    #Create request method for State
-    def send_state_request(self, requestInfo):   #can be more parameters, names should match expected in the services
-        self.req1.leftRPM = requestInfo[0]
-        self.req1.rightRPM = requestInfo[1]
-        self.req1.bottomActuatorPosition = requestInfo[2]
-        self.req1.topActuatorPosition = requestInfo[3]
-        self.req1.time = requestInfo[5]
-        return self.state_client.call_async(self.req1)
-
-    #Create request method for Set_Mode
-    def send_mode_request(self):    #can be more parameters, names should match expected in the services
-        self.req2.pinModeCode = self.setupPinModeCode
-        return self.mode_client.call_async(self.req2)
-
-    #and interperet/use that information
-        #unknown what to do with that info at this time. ~Ethan
-    def callback_State(self):
         return 0
     
-    #and interperet/use that information
-        #unknown what to do with that info at this time. ~Ethan
-    def callback_Name(self):
-        return 0
-    
-    #and interperet/use that information
-        #unknown what to do with that info at this time. ~Ethan
-    def callback_Health(self):
-        return 0
+    def twist_callback(self, msg):
+        #update self variables
+        self.buttonArray = msg.buttons
+        self.forwardVelocity = msg.linear.x
+        self.angularVelocity = msg.angular.z
+
 
 #standard node main function
 def main(args=None):
