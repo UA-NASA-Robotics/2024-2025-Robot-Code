@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "*.sdf": "xml",
-        "*.gzlaunch": "xml",
-        "map": "cpp"
-    }
-}
