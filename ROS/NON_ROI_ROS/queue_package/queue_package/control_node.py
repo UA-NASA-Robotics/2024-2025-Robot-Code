@@ -46,13 +46,13 @@ class ControlNode(Node):
     def __init__(self):
         super().__init__('control_node')
 
-        self.mux_subscriber = self.create_subscription(TwistPlus, '/input', self.twist_callback, 10) # Rename 'macro_twist_plus in launch file
+        self.mux_subscriber = self.create_subscription(TwistPlus, '/input/twist_plus', self.twist_callback, 10) # Rename 'macro_twist_plus in launch file
         #self.active_macros = self.create_subscription(ActiveMacros, 'active_macros', self.macro_callback, 10)
 
-        self.set_left_1_client = self.create_client(ODriveSetVelocity, '/set_velocity')
-        #self.set_left_2_client = self.create_client(ODriveSetVelocity, 'set_velocity/left_two')
-        #self.set_right_1_client = self.create_client(ODriveSetVelocity, 'set_velocity/right_one')
-        #self.set_right_2_client = self.create_client(ODriveSetVelocity, 'set_velocity/right_two')
+        self.oDrive1= self.create_client(ODriveSetVelocity, '/oDrive1')
+        self.oDrive2 = self.create_client(ODriveSetVelocity, '/oDrive2')
+        self.oDrive3 = self.create_client(ODriveSetVelocity, '/oDrive3')
+        self.oDrive4 = self.create_client(ODriveSetVelocity, '/oDrive4')
 
         
         self.forwardVelocity = None
@@ -86,13 +86,13 @@ class ControlNode(Node):
         right_message.torque_feedforward = 0.0
 
         # Send request to server, and don't hold up waiting for response
-        self.get_logger().info(str(left_message))
-        left_future1 = self.set_left_1_client.call_async(left_message)
-        self.get_logger().info("Service Success")
-        #left_future2 = self.set_left_2_client.call_async(left_message)
+        #self.get_logger().info(str(left_message))
+        left_future1 = self.oDrive1.call_async(left_message)
+        #self.get_logger().info("Service Success")
+        left_future2 = self.oDrive3.call_async(left_message)
 
-#        right_future1 = self.set_left_1_client.call_async(right_message)
- #       right_future2 = self.set_left_2_client.call_async(right_message)
+        right_future1 = self.oDrive2.call_async(right_message)
+        right_future2 = self.oDrive4.call_async(right_message)
 
     #Interperet the Twist_Plus to make a service request to the MCU package
         #On startup call the "Set Mode" service -- This will be a macro

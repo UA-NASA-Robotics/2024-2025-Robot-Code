@@ -17,7 +17,11 @@
                 exec="control_node" 
                 name="control_node" 
                 output="screen">
-                <remap from="/input" to="/queue/mux/twist_plus"/>
+                <remap from="/input/twist_plus" to="/queue/mux/twist_plus"/>
+                <remap from="/oDrive1" to="/set_velocity/FL"/>
+                <remap from="/oDrive2" to="/set_velocity/FR"/>
+                <remap from="/oDrive3" to="/set_velocity/RL"/>
+                <remap from="/oDrive4" to="/set_velocity/RR"/>
             </node>
         </group>
 
