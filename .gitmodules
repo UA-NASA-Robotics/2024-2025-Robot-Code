@@ -1,3 +1,6 @@
 [submodule "ROI"]
 	path = ROI
 	url = https://github.com/UA-NASA-Robotics/Roobot-Over-IP
+[submodule "ROS/Roobot-Over-IP"]
+	path = ROS/Roobot-Over-IP
+	url = https://github.com/UA-NASA-Robotics/Roobot-Over-IP.git
