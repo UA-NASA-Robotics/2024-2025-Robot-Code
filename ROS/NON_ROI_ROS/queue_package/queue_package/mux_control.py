@@ -55,7 +55,8 @@ class RequestHandler(Node):
             for j in [i.x, i.y, i.z]:
                 if abs(j) > threshold:
                     return True
-        return False
+        buttons = [item for item in dir(msg.buttons) if not item[0] == "_"]
+        return any([getattr(msg.buttons, button_name) for button_name in buttons]) 
         
     def input1_callback(self, msg):
         """!
