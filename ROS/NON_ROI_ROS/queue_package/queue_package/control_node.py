@@ -42,6 +42,9 @@ distance_between_wheels = 0.5 #meters
         #unknown what to do with that info at this time. ~Ethan
 
 class ControlNode(Node):
+    """
+    Node for taking incoming requests and sending it to each part
+    """
     #Initialize node and crease subscribers and clients
     def __init__(self):
         super().__init__('control_node')
@@ -63,15 +66,22 @@ class ControlNode(Node):
         self.left_wheel_speed = None
         self.right_wheel_speed = None
     
-    # source https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html#differential-drive-robot
-    #Calculate the RPM of the left and right wheels based on the linear and angular velocities
     def calculateRPM(self):
+        """
+        source `ros.org`_.
+
+        Calculate the RPM of the left and right wheels based on the linear and angular velocities
+        .. _ros.org: https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html#differential-drive-robot
+        """
         leftVelocity = self.forwardVelocity - (self.angularVelocity * distance_between_wheels / 2)/60
         rightVelocity = self.forwardVelocity + (self.angularVelocity * distance_between_wheels / 2)/60
         return leftVelocity, rightVelocity
     
     # Sends service request to all 4 wheel servers
     def request_set_velocity(self):
+        """
+        Sends request to wheels based on control
+        """
         print("HELLO")
         left_message = ODriveSetVelocity.Request()
         right_message = ODriveSetVelocity.Request()
@@ -94,15 +104,17 @@ class ControlNode(Node):
         right_future1 = self.oDrive2.call_async(right_message)
         right_future2 = self.oDrive4.call_async(right_message)
 
-    #Interperet the Twist_Plus to make a service request to the MCU package
-        #On startup call the "Set Mode" service -- This will be a macro
-        #Check to see if a button/macro is pressed/called
-            #If it is the "cancel" button, clear the que and send a "stop" command
-            #otherwise do the macro
-                #continue to velocity translations unless macro says to wait
-        #otherwise translate the linear.x (forwards velocity from -1 to 1?) and angular.z 
-        #(rotational velocity from w_min to w_max) into Left and Right motor RPMs/desired velocities    
     def macro_callback(self, msg):
+        """
+        Interpret the Twist_Plus to make a service request to the MCU package
+
+        On startup, call the "Set Mode" service – this will be a macro
+        Check to see if a button/macro is pressed/called
+
+            If false, "cancel" the button, clear the queue and send a "stop" command
+            Otherwise, call the macro
+        Also, translare the linear and angular portions to left/right side commands
+        """
 
         #if any controller button is pressed
         if 1.0 in self.buttonArray:
@@ -178,7 +190,9 @@ class ControlNode(Node):
         return 0
     
     def twist_callback(self, msg):
-        #update self variables
+        """
+        Main update loop
+        """
         self.buttonArray = msg.buttons
         self.forwardVelocity = msg.linear.x
         self.angularVelocity = msg.angular.z
