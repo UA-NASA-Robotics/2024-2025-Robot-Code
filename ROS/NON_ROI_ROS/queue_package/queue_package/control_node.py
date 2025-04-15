@@ -65,9 +65,9 @@ class ControlNode(Node):
     
     # source https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html#differential-drive-robot
     #Calculate the RPM of the left and right wheels based on the linear and angular velocities
-    def calculateRPM(self, linearVelocity, angularVelocity):
-        leftVelocity = linearVelocity - (angularVelocity * distance_between_wheels / 2)/60
-        rightVelocity = linearVelocity + (angularVelocity * distance_between_wheels / 2)/60
+    def calculateRPM(self):
+        leftVelocity = self.forwardVelocity - (self.angularVelocity * distance_between_wheels / 2)/60
+        rightVelocity = self.forwardVelocity + (self.angularVelocity * distance_between_wheels / 2)/60
         return leftVelocity, rightVelocity
     
     # Sends service request to all 4 wheel servers
@@ -172,7 +172,7 @@ class ControlNode(Node):
         #if not self.theQue.empty():
         #    send_state_request(self, self.theQue.get())
 
-        self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM(self.forwardVelocity, self.angularVelocity)
+        self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
         self.request_set_velocity(self.left_wheel_speed, self.right_wheel_speed)
 
         return 0
@@ -182,7 +182,7 @@ class ControlNode(Node):
         self.buttonArray = msg.buttons
         self.forwardVelocity = msg.linear.x
         self.angularVelocity = msg.angular.z
-        self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM(self.forwardVelocity, self.angularVelocity)
+        self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
         self.request_set_velocity()
 
 
