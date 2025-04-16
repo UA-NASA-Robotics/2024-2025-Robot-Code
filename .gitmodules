@@ -4,3 +4,7 @@
 [submodule "ROS/Roobot-Over-IP"]
 	path = ROS/Roobot-Over-IP
 	url = https://github.com/UA-NASA-Robotics/Roobot-Over-IP.git
+[submodule "ROS/isaac_ros_common"]
+	path = ROS/isaac_ros_common
+	url = https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git
+	branch = release-3.2
