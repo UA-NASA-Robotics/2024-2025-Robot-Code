@@ -10,6 +10,7 @@ from interfaces.msg import TwistPlus
 class ControllerInterpreter(Node):
     def __init__(self):
         super().__init__('skid_steer')
+        self.output = TwistPlus()
 
         # Each element corresponds to an input from the controller
         # Split into axes and buttons
@@ -59,6 +60,7 @@ class ControllerInterpreter(Node):
         )
 
         self.cmd_vel_publisher = self.create_publisher(TwistPlus, 'twist_plus', 10)
+        self.create_timer(0.05, self.timer_callback)
 
     # On a new controller input, send a TwistPlus packet
     def listener_callback(self, msg: Joy):
@@ -68,27 +70,28 @@ class ControllerInterpreter(Node):
         axes_parameters = self.get_parameter('axes').get_parameter_value().string_array_value
         button_parameters = self.get_parameter('buttons').get_parameter_value().string_array_value
 
-        output = TwistPlus()
-
         # Set both parts of TwistPlus message
-        self.set_twist(msg, output, axes_parameters, wheel_radius, wheel_separation)
-        self.set_buttons(msg, output, button_parameters)
+        self.set_twist(msg, self.output, axes_parameters, wheel_radius, wheel_separation)
+        self.set_buttons(msg, self.output, button_parameters)
 
-        # If the output packet is all 0's
-        if self.test_null(output):
-            # If a 0's packet was already sent
-            if self.null_sent:
-                # stop
-                return
-            # Set null_sent to true
-            # Send the packet of 0's
-            self.null_sent = True
-        else:
-            # The packet is not all 0's
-            self.null_sent = False
+        # # If the output packet is all 0's
+        # if self.test_null(output):
+        #     # If a 0's packet was already sent
+        #     if self.null_sent:
+        #         # stop
+        #         return
+        #     # Set null_sent to true
+        #     # Send the packet of 0's
+        #     self.null_sent = True
+        # else:
+        #     # The packet is not all 0's
+        #     self.null_sent = False
 
         # Send the packet
-        self.cmd_vel_publisher.publish(output)
+        #self.cmd_vel_publisher.publish(output)
+
+    def timer_callback(self):
+        self.cmd_vel_publisher.publish(self.output)
 
     # Prepares Twist part of TwistPlus
     def set_twist(self, input: Joy, output: TwistPlus, axes: list[str],

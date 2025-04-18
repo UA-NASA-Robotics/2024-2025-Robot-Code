@@ -5,8 +5,9 @@ from std_msgs.msg import String
 from interfaces.msg import TwistPlus
 #from interfaces.srv import ODriveSetVelocity
 from roi_ros.srv import ODriveSetVelocity
+import time
 
-distance_between_wheels = 0.5 #meters
+distance_between_wheels = 10 #meters
 
 #What control_node should do:
     #Listen to the output topic from mux_node which is a Twist_Plus() type message
@@ -73,8 +74,8 @@ class ControlNode(Node):
         Calculate the RPM of the left and right wheels based on the linear and angular velocities
         .. _ros.org: https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html#differential-drive-robot
         """
-        leftVelocity = self.forwardVelocity - (self.angularVelocity * distance_between_wheels / 2)/60
-        rightVelocity = self.forwardVelocity + (self.angularVelocity * distance_between_wheels / 2)/60
+        leftVelocity = (self.forwardVelocity - (self.angularVelocity * distance_between_wheels / 2))
+        rightVelocity = (self.forwardVelocity + (self.angularVelocity * distance_between_wheels / 2))
         return leftVelocity, rightVelocity
     
     # Sends service request to all 4 wheel servers
@@ -82,27 +83,29 @@ class ControlNode(Node):
         """
         Sends request to wheels based on control
         """
-        print("HELLO")
+        #print("HELLO")
         left_message = ODriveSetVelocity.Request()
         right_message = ODriveSetVelocity.Request()
 
         # Set Left side speed and torque
         
-        left_message.velocity = self.left_wheel_speed
+        left_message.velocity = self.left_wheel_speed * 5
         left_message.torque_feedforward = 0.0
 
         # Set Right side speed and torque
-        right_message.velocity = self.right_wheel_speed
+        right_message.velocity = self.right_wheel_speed *5
         right_message.torque_feedforward = 0.0
 
         # Send request to server, and don't hold up waiting for response
         #self.get_logger().info(str(left_message))
         left_future1 = self.oDrive1.call_async(left_message)
-        #self.get_logger().info("Service Success")
-        left_future2 = self.oDrive3.call_async(left_message)
-
         right_future1 = self.oDrive2.call_async(right_message)
+        
+        right_message.velocity = self.right_wheel_speed*5*-1
+        left_message.velocity = self.left_wheel_speed*5*-1
+
         right_future2 = self.oDrive4.call_async(right_message)
+        left_future2 = self.oDrive3.call_async(left_message)
 
     def macro_callback(self, msg):
         """
