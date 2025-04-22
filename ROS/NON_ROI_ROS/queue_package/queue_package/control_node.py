@@ -73,6 +73,9 @@ class ControlNode(Node):
 
         self.actuatorMessage1 = ActuatorSetVelocity.Request()
         self.actuatorMessage2 = ActuatorSetVelocity.Request()
+
+        self.actuator1.torque_feedforward = 0.0
+        self.actuator2.torque_feedforward = 0.0
     
     def calculateRPM(self):
         """
