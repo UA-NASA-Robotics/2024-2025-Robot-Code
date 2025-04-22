@@ -5,6 +5,7 @@ from std_msgs.msg import String
 from interfaces.msg import TwistPlus
 #from interfaces.srv import ODriveSetVelocity
 from roi_ros.srv import ODriveSetVelocity
+from roi_ros.srv import ActuatorSetVelocity
 import time
 
 distance_between_wheels = 10 #meters
@@ -58,6 +59,9 @@ class ControlNode(Node):
         self.oDrive3 = self.create_client(ODriveSetVelocity, '/oDrive3')
         self.oDrive4 = self.create_client(ODriveSetVelocity, '/oDrive4')
 
+        self.actuator1 = self.create_client(ActuatorSetVelocity, '/actuator1')
+        self.actuator2 = self.create_client(ActuatorSetVelocity, '/actuator2')
+
         
         self.forwardVelocity = None
         self.angularVelocity = None
@@ -66,6 +70,9 @@ class ControlNode(Node):
         self.theQue = queue.Queue()
         self.left_wheel_speed = None
         self.right_wheel_speed = None
+
+        self.actuatorMessage1 = ActuatorSetVelocity.Request()
+        self.actuatorMessage2 = ActuatorSetVelocity.Request()
     
     def calculateRPM(self):
         """
@@ -83,7 +90,7 @@ class ControlNode(Node):
         """
         Sends request to wheels based on control
         """
-        #print("HELLO")
+
         left_message = ODriveSetVelocity.Request()
         right_message = ODriveSetVelocity.Request()
 
@@ -119,76 +126,25 @@ class ControlNode(Node):
         Also, translare the linear and angular portions to left/right side commands
         """
 
-        #if any controller button is pressed
-        if 1.0 in self.buttonArray:
-            #do the action with priority in order
+        if self.buttonArray[0] == 1:
+            self.actuatorMessage1.velocity = 100
+        elif self.buttonArray[1] == 1:
+            self.actuatorMessage1.velocity = -100
+        else:
+            self.actuatorMessage1.velocity = 0
 
-            #TODO: Cancel all actions button (probably B/O button)
-            if buttonArray[0] == 1:
-                #clear que
-                send_state_request(self, 0, 0, -1, -1, -1) #set motor RPMs to 0, actuators to idle, instantly
-                return  #stop processing code early
+        if self.buttonArray[2] == 1:
+            self.actuatorMessage2.velocity = 100
+        elif self.buttonArray[3] == 1:
+            self.actuatorMessage2.velocity = -100
+        else:
+            self.actuatorMessage2.velocity = 0
             
-            #Macro Name
-            elif buttonArray[1] == 1:
-                #TODO: Add macro steps to que
-                pass
-
-            #Macro Name
-            elif buttonArray[2] == 1:
-                #TODO: Add macro steps to que
-                pass
-
-            #Macro Name
-            elif buttonArray[3] == 1:
-                #TODO: Add macro steps to que
-                pass
-            
-            #Macro Name
-            elif buttonArray[4] == 1:
-                #TODO: Add macro steps to que
-                pass
-            
-            #Macro Name
-            elif buttonArray[5] == 1:
-                #TODO: Add macro steps to que
-                pass 
-            
-            #Macro Name
-            elif buttonArray[6] == 1:
-                #TODO: Add macro steps to que
-                pass
-
-            #Macro Name
-            elif buttonArray[7] == 1:
-                pass
-                                
-            #Setup Pin Mode -- P3 button / Home button
-            elif buttonArray[8] == 1:
-                send_mode_request(self) #send directly, bypassing que
-                return  #stop early
-            
-            #Macro Name
-            elif buttonArray[9] == 1:
-                #TODO: Add macro steps to que
-                pass
-            
-            #Macro Name
-            elif buttonArray[10] == 1:
-                #TODO: Add macro steps to que
-                pass
-
-        #pack all the information into
-        # What is "left" in this context? ~Elia
-        self.requestArray = [left]
-        self.theQue.put(self.requestArray)
-
-        #if the que is not empty, make request
-        #if not self.theQue.empty():
-        #    send_state_request(self, self.theQue.get())
-
         self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
         self.request_set_velocity(self.left_wheel_speed, self.right_wheel_speed)
+        
+        self.actuator1.call_async(self.actuatorMessage1)
+        self.actuator2.call_async(self.actuatorMessage2)
 
         return 0
     
