@@ -74,8 +74,11 @@ class ControlNode(Node):
         self.actuatorMessage1 = ActuatorSetVelocity.Request()
         self.actuatorMessage2 = ActuatorSetVelocity.Request()
 
-        self.actuator1.torque_feedforward = 0.0
-        self.actuator2.torque_feedforward = 0.0
+        self.actuatorMessage1.sub_device_id = 0
+        self.actuatorMessage2.sub_device_id = 1
+
+        self.act1_update = 1
+        self.act2_update = 1
     
     def calculateRPM(self):
         """
@@ -99,7 +102,7 @@ class ControlNode(Node):
 
         # Set Left side speed and torque
         
-        left_message.velocity = self.left_wheel_speed * 5
+        left_message.velocity = self.left_wheel_speed * 5 * -1
         left_message.torque_feedforward = 0.0
 
         # Set Right side speed and torque
@@ -118,37 +121,6 @@ class ControlNode(Node):
         left_future2 = self.oDrive3.call_async(left_message)
 
     def macro_callback(self, msg):
-        """
-        Interpret the Twist_Plus to make a service request to the MCU package
-
-        On startup, call the "Set Mode" service – this will be a macro
-        Check to see if a button/macro is pressed/called
-
-            If false, "cancel" the button, clear the queue and send a "stop" command
-            Otherwise, call the macro
-        Also, translare the linear and angular portions to left/right side commands
-        """
-
-        if self.buttonArray[0] == 1:
-            self.actuatorMessage1.velocity = 100
-        elif self.buttonArray[1] == 1:
-            self.actuatorMessage1.velocity = -100
-        else:
-            self.actuatorMessage1.velocity = 0
-
-        if self.buttonArray[2] == 1:
-            self.actuatorMessage2.velocity = 100
-        elif self.buttonArray[3] == 1:
-            self.actuatorMessage2.velocity = -100
-        else:
-            self.actuatorMessage2.velocity = 0
-            
-        self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
-        self.request_set_velocity(self.left_wheel_speed, self.right_wheel_speed)
-        
-        self.actuator1.call_async(self.actuatorMessage1)
-        self.actuator2.call_async(self.actuatorMessage2)
-
         return 0
     
     def twist_callback(self, msg):
@@ -160,6 +132,49 @@ class ControlNode(Node):
         self.angularVelocity = msg.angular.z
         self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
         self.request_set_velocity()
+
+        if self.buttonArray.button_actuator_arm_up == 1:
+            if self.actuatorMessage1.velocity != 100.0:
+                self.act1_update = 1
+                self.actuatorMessage1.velocity = 100.0
+
+        elif self.buttonArray.button_actuator_arm_down == 1:
+            if self.actuatorMessage1.velocity != -100.0:
+                self.act1_update = 1
+            self.actuatorMessage1.velocity = -100.0
+
+        else:
+            if self.actuatorMessage1.velocity != 0:
+                self.act1_update = 1
+            self.actuatorMessage1.velocity = 0.0
+
+
+        if self.buttonArray.button_actuator_pitch_up == 1:
+            if self.actuatorMessage2.velocity != 100.0:
+                self.act2_update = 1
+            self.actuatorMessage2.velocity = 100.0
+
+        elif self.buttonArray.button_actuator_pitch_down == 1:
+            if self.actuatorMessage2.velocity != -100.0:
+                self.act2_update = 1
+            self.actuatorMessage2.velocity = -100.0
+
+        else:
+            if self.actuatorMessage2.velocity != 0:
+                self.act2_update = 1
+            self.actuatorMessage2.velocity = 0.0
+
+
+        if self.act1_update == 1:
+            act1_result = self.actuator1.call_async(self.actuatorMessage1)
+            self.get_logger().info(str(self.actuatorMessage1)+" was message to actuator1")
+            self.act1_update = 0
+        
+        if self.act2_update == 1:
+            act2_result = self.actuator2.call_async(self.actuatorMessage2)
+            self.get_logger().info(str(self.actuatorMessage2)+" was message to actuator2")
+            self.act2_update = 0
+
 
 
 #standard node main function

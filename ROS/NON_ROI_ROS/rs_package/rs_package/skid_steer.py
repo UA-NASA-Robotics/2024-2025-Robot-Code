@@ -27,8 +27,8 @@ class ControllerInterpreter(Node):
             '',                 # Right Trigger (R2)
         ]
         button_map = [
-            'control_autonomy_enable',  # A (X)
-            'wheel_ismoving',                         # B (◯)
+            'actuator_pitch_up',  # A (X)
+            'actuator_pitch_down',                         # B (◯)
             'actuator_arm_up',                         # X (□)
             'actuator_arm_down',                         # Y (△)
             'actuator_arm_stop',                         # Menu
