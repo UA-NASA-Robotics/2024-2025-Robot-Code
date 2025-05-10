@@ -65,12 +65,10 @@ class RequestHandler(Node):
         # If we're on input2 and detect movement on input1, switch back to input1
         if self.active_input == 2 and self.is_movement_detected(msg):
             self.active_input = 1
-            self.get_logger().info('going_back')
 
         # If autonomy button is pressed, switch to input2
         if msg.buttons.button_control_autonomy_enable:
             self.active_input = 2
-            self.get_logger().info('switching')
         
         # If we're on input1, publish the message
         if self.active_input == 1:
