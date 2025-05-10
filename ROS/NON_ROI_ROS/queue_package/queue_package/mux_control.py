@@ -49,15 +49,10 @@ class RequestHandler(Node):
         @param msg The TwistPlus message to check for movement
         @return True if any linear or angular velocity component exceeds 5% of full range, False otherwise
         """
-        # Check if absolute value of any component exceeds 5% (0.05)
-        threshold = 0.05
-        for i in [msg.linear, msg.angular]:
-            for j in [i.x, i.y, i.z]:
-                if abs(j) > threshold:
-                    return True
-        buttons = [item for item in dir(msg.buttons) if not item[0] == "_"]
-        return any([getattr(msg.buttons, button_name) for button_name in buttons]) 
-        
+        # print('hi' if getattr(msg.buttons, '_button_control_autonomy_enable'[1:]) else "bye")
+        buttons = [button[1:] for button in msg.buttons.__slots__ if button.__contains__('button')]
+        return any([getattr(msg.buttons, button_name) for button_name in buttons])
+
     def input1_callback(self, msg):
         """!
         @brief Callback function for the first input topic.
@@ -67,13 +62,15 @@ class RequestHandler(Node):
         
         @param msg The TwistPlus message received from input1
         """
-        # If autonomy button is pressed, switch to input2
-        if msg.buttons.button_control_autonomy_enable:
-            self.active_input = 2
-        
         # If we're on input2 and detect movement on input1, switch back to input1
         if self.active_input == 2 and self.is_movement_detected(msg):
             self.active_input = 1
+            self.get_logger().info('going_back')
+
+        # If autonomy button is pressed, switch to input2
+        if msg.buttons.button_control_autonomy_enable:
+            self.active_input = 2
+            self.get_logger().info('switching')
         
         # If we're on input1, publish the message
         if self.active_input == 1:
