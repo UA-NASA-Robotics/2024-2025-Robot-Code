@@ -27,8 +27,8 @@ class ControllerInterpreter(Node):
             'actuator_pitch_down',                 # Right Trigger (R2)
         ]
         button_map = [
-            '',  # A (X)
-            '',                         # B (◯)
+            'actuator_dig_cycle',       # A (X)
+            'actuator_dump_cycle',      # B (◯)
             '',                         # X (□)
             '',                         # Y (△)
             'actuator_arm_stop',                         # Menu
@@ -38,10 +38,10 @@ class ControllerInterpreter(Node):
             '',                         # Right Stick
             'actuator_arm_up',                         # Left Bumper (L1)
             'actuator_pitch_up',                         # Right Bumper (R1)
-            'actuator_dump_cycle',                         # D-Pad Up
-            'actuator_dig_cycle',                         # D-Pad Down
-            '',                         # D-Pad Left
-            '',                         # D-Pad Right
+            'wheel_nav_north',                         # D-Pad Up
+            'wheel_nav_south',                         # D-Pad Down
+            'wheel_nav_west',                         # D-Pad Left
+            'wheel_nav_east',                         # D-Pad Right
         ]
 
         # Don't send many null packets (reduce bandwidth usage)
