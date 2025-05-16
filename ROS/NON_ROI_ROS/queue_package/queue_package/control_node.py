@@ -65,7 +65,7 @@ class ControlNode(Node):
         self.oDrive2 = self.create_client(ODriveSetVelocity, "/oDrive2")
         self.oDrive3 = self.create_client(ODriveSetVelocity, "/oDrive3")
         self.oDrive4 = self.create_client(ODriveSetVelocity, "/oDrive4")
-        self.oDriveBackup = self.create_client(ODriveSetVelocity, '/oDriveBackup')
+        self.oDriveBackup = self.create_client(ODriveSetVelocity, "/oDriveBackup")
 
         self.actuator1 = self.create_client(ActuatorSetVelocity, "/actuator1")
         self.actuator2 = self.create_client(ActuatorSetVelocity, "/actuator2")
@@ -142,7 +142,7 @@ class ControlNode(Node):
         self.buttonArray = msg.buttons
         self.forwardVelocity = msg.linear.x
         self.angularVelocity = msg.angular.z
-        
+
         if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive():
             self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
             self.request_set_velocity()
@@ -261,7 +261,60 @@ class ControlNode(Node):
         self.get_logger().info("done")
 
     def dumpMacro(self):
-        pass
+        """Dump Macro. Wheels forward, then act 1 does 100, then back and forth, then wheels back."""
+
+        self.left_wheel_speed, self.right_wheel_speed = 7.0, 7.0
+        self.request_set_velocity()
+
+        self.get_logger().info("started dump macro")
+
+        if not self.cancelSleep(3):
+            return
+
+        self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
+        self.request_set_velocity()
+
+        self.get_logger().info("stop wheel")
+
+        self.actuatorMessage1.velocity = 100.0
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+
+        if not self.cancelSleep(3):
+            return
+
+        self.get_logger().info("actuator up")
+
+        self.actuatorMessage1.velocity = -100.0
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+
+        if not self.cancelSleep(1):
+            return
+
+        self.get_logger().info("actuator down")
+
+        self.actuatorMessage1.velocity = 100.0
+
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+
+        if not self.cancelSleep(2):
+            return
+
+        self.get_logger().info("back up")
+        self.actuatorMessage1.velocity = 0.0
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+
+        self.left_wheel_speed, self.right_wheel_speed = -7.0, -7.0
+        self.request_set_velocity()
+        self.get_logger().info("wheels back")
+        if not self.cancelSleep(3):
+            return
+        self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
+        self.request_set_velocity()
+        self.get_logger().info("stop wheel")
 
     def cancelSleep(self, seconds):
         """
@@ -272,7 +325,7 @@ class ControlNode(Node):
         while rclpy.ok() and self.forwardVelocity == 0 and self.angularVelocity == 0:
             if time.time() - startTime > seconds:
                 return True
-    
+
         return False
 
 
