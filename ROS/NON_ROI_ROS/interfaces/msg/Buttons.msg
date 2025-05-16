@@ -10,3 +10,4 @@ bool button_actuator_arm_stop
 bool button_actuator_pitch_up
 bool button_actuator_pitch_down
 bool button_actuator_pitch_stop
+bool button_dig_cycle

@@ -1,0 +1,68 @@
+<launch>
+    <arg name="use_turtlesim" default="false"/>
+
+    <group>
+        <group>
+            <node pkg="queue_package" 
+                exec="mux_control" 
+                name="mux_control">
+                <remap from="/input1" to="/rs/twist_plus"/>
+                <remap from="/input2" to="/autonomy/twist_plus"/>
+                <remap from="/output" to="/queue/mux/twist_plus"/>
+            </node>
+        </group>
+
+        <group>
+            <node pkg="queue_package" 
+                exec="ODriveOrin" 
+                name="ODriveOrin">
+                <remap from="/output" to="/set_velocity/Backup"/>
+            </node>
+        </group>
+
+        <group>
+            <node pkg="queue_package" 
+                exec="control_node" 
+                name="control_node" 
+                output="screen">
+                <remap from="/input/twist_plus" to="/queue/mux/twist_plus"/>
+                <remap from="/oDrive1" to="/set_velocity/FL"/>
+                <remap from="/oDrive2" to="/set_velocity/FR"/>
+                <remap from="/oDrive3" to="/set_velocity/RL"/>
+                <remap from="/oDrive4" to="/set_velocity/RR"/>
+                <remap from="/oDriveBackup" to="/set_velocity/Backup"/>
+
+                <remap from="/actuator1" to="/set_velocity/act1"/>
+                <remap from="/actuator2" to="/set_velocity/act2"/>
+            </node>
+        </group>
+
+        <group if="$(var use_turtlesim)">
+            <node pkg="rs_package"
+                exec="separate_twistplus"
+                name="separate_twistplus"
+                output="screen">
+                <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
+            </node>
+
+            <node pkg="rs_package"
+                exec="separate_twistplus"
+                name="separate_twistplus"
+                output="screen">
+                <remap from="/cmd_vel" to="/output/cmd_vel"/>
+            </node>
+        </group>
+
+        <group>
+            <node pkg="queue_package"
+                exec="macro_conflicts"
+                name="macro_conflicts"
+                output="screen">
+                <remap from="/input" to="/queue/mux/twist_plus"/>
+                <remap from="/output" to="/I_shitted_my_pants/I_am_for_reeal"/>
+            </node>
+        </group>
+
+
+    </group>
+</launch>

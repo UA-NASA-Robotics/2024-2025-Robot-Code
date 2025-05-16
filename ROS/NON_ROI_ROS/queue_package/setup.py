@@ -13,8 +13,9 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*')),
+        ('install/' + package_name + '/lib/python3.12/site-packages/odrive/lib/libodrive-linux-x86_64.so', ['../../gahh/lib/python3.12/site-packages/odrive/lib/libodrive-linux-x86_64.so'])
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'odrive'],
     zip_safe=True,
     maintainer='Ethan',
     maintainer_email='162376649+Piglet337@users.noreply.github.com',
@@ -29,6 +30,7 @@ setup(
             'macro_lut = queue_package.macro_lut:main',
             'feedback_processor = queue_package.feedback_processor:main',
             'macro_conflicts = queue_package.macro_conflicts:main',
+            'ODriveOrin = queue_package.ODriveOrin:main'
         ],
     },
 ) 

@@ -23,23 +23,23 @@ class ControllerInterpreter(Node):
             'left_drive',       # Left Stick Y
             '',                 # Right Stick X
             'right_drive',      # Right Stick Y
-            '',                 # Left Trigger (L2)
-            '',                 # Right Trigger (R2)
+            'actuator_arm_down',                 # Left Trigger (L2)
+            'actuator_pitch_down',                 # Right Trigger (R2)
         ]
         button_map = [
-            'actuator_pitch_up',  # A (X)
-            'actuator_pitch_down',                         # B (◯)
-            'actuator_arm_up',                         # X (□)
-            'actuator_arm_down',                         # Y (△)
+            '',  # A (X)
+            '',                         # B (◯)
+            '',                         # X (□)
+            '',                         # Y (△)
             'actuator_arm_stop',                         # Menu
             '',                         # Home
             '',                         # Start
             '',                         # Left Stick
             '',                         # Right Stick
-            '',                         # Left Bumper (L1)
-            '',                         # Right Bumper (R1)
+            'actuator_arm_up',                         # Left Bumper (L1)
+            'actuator_pitch_up',                         # Right Bumper (R1)
             '',                         # D-Pad Up
-            '',                         # D-Pad Down
+            'dig_cycle',                         # D-Pad Down
             '',                         # D-Pad Left
             '',                         # D-Pad Right
         ]
@@ -113,6 +113,21 @@ class ControllerInterpreter(Node):
             output.buttons.button_wheel_ismoving = True
         else:
             output.buttons.button_wheel_ismoving = False
+
+        actuator_pitch_down_bool = input.axes[axes.index('actuator_pitch_down')]
+        actuator_arm_down_bool = input.axes[axes.index('actuator_arm_down')]
+
+        #self.get_logger().info(str(actuator_arm_down_bool))
+
+        if actuator_arm_down_bool <= -0.5:
+            output.buttons.button_actuator_arm_down = True
+        else:
+            output.buttons.button_actuator_arm_down = False
+
+        if actuator_pitch_down_bool <= -0.5:
+            output.buttons.button_actuator_pitch_down = True
+        else:
+            output.buttons.button_actuator_pitch_down = False 
 
         # Return the output
         return output
