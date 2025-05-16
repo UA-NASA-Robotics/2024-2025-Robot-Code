@@ -38,7 +38,7 @@ class ControllerInterpreter(Node):
             '',                         # Right Stick
             'actuator_arm_up',                         # Left Bumper (L1)
             'actuator_pitch_up',                         # Right Bumper (R1)
-            'actuator_dump',                         # D-Pad Up
+            'actuator_dump_cycle',                         # D-Pad Up
             'actuator_dig_cycle',                         # D-Pad Down
             '',                         # D-Pad Left
             '',                         # D-Pad Right

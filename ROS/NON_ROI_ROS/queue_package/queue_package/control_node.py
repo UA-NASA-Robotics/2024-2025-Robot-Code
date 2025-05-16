@@ -1,6 +1,8 @@
 import rclpy
 from rclpy.node import Node
 import queue
+import rclpy.timer
+import rclpy.waitable
 from std_msgs.msg import String
 from interfaces.msg import TwistPlus
 
@@ -63,7 +65,7 @@ class ControlNode(Node):
         self.oDrive2 = self.create_client(ODriveSetVelocity, "/oDrive2")
         self.oDrive3 = self.create_client(ODriveSetVelocity, "/oDrive3")
         self.oDrive4 = self.create_client(ODriveSetVelocity, "/oDrive4")
-        # self.oDriveBackup = self.create_client(ODriveSetVelocity, '/oDriveBackup')
+        self.oDriveBackup = self.create_client(ODriveSetVelocity, '/oDriveBackup')
 
         self.actuator1 = self.create_client(ActuatorSetVelocity, "/actuator1")
         self.actuator2 = self.create_client(ActuatorSetVelocity, "/actuator2")
@@ -140,8 +142,10 @@ class ControlNode(Node):
         self.buttonArray = msg.buttons
         self.forwardVelocity = msg.linear.x
         self.angularVelocity = msg.angular.z
-        self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
-        self.request_set_velocity()
+        
+        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive():
+            self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
+            self.request_set_velocity()
 
         if self.buttonArray.button_actuator_dig_cycle == 1:
             if not self.digMacroThread.is_alive():
@@ -183,22 +187,24 @@ class ControlNode(Node):
                 self.act2_update = 1
             self.actuatorMessage2.velocity = 0.0
 
-        if self.act1_update == 1:
-            act1_result = self.actuator1.call_async(self.actuatorMessage1)
-            self.get_logger().info(str(self.actuatorMessage1) + " was message to actuator1")
-            self.act1_update = 0
+        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive():
 
-        if self.act2_update == 1:
-            act2_result = self.actuator2.call_async(self.actuatorMessage2)
-            self.get_logger().info(str(self.actuatorMessage2) + " was message to actuator2")
-            self.act2_update = 0
+            if self.act1_update == 1:
+                act1_result = self.actuator1.call_async(self.actuatorMessage1)
+                self.get_logger().info(str(self.actuatorMessage1) + " was message to actuator1")
+                self.act1_update = 0
+
+            if self.act2_update == 1:
+                act2_result = self.actuator2.call_async(self.actuatorMessage2)
+                self.get_logger().info(str(self.actuatorMessage2) + " was message to actuator2")
+                self.act2_update = 0
 
     def digMacro(self):
         """Dig Macro. Actuator 1 goes down, act 2 goes up, then slightly down.
         then wheels forward for x secs."""
 
-        self.actuatorMessage1.velocity = -100.0
-        self.actuatorMessage2.velocity = 100.0
+        self.actuatorMessage1.velocity = 100.0
+        self.actuatorMessage2.velocity = -100.0
 
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act2_result = self.actuator2.call_async(self.actuatorMessage2)
@@ -206,14 +212,20 @@ class ControlNode(Node):
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act2_result = self.actuator2.call_async(self.actuatorMessage2)
 
-        self.cancelSleep(5)
+        self.get_logger().info("started dig macro")
 
-        self.actuatorMessage2.velocity = 50.0
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        if not self.cancelSleep(5):
+            return
+
+        self.actuatorMessage1.velocity = -50.0
+        act2_result = self.actuator1.call_async(self.actuatorMessage1)
         # send again to be safe.
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        act2_result = self.actuator1.call_async(self.actuatorMessage1)
 
-        self.cancelSleep(0.5)
+        self.get_logger().info("wrist back")
+
+        if not self.cancelSleep(0.15):
+            return
 
         self.actuatorMessage1.velocity = 0.0
         self.actuatorMessage2.velocity = 0.0
@@ -224,19 +236,29 @@ class ControlNode(Node):
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act2_result = self.actuator2.call_async(self.actuatorMessage2)
 
-        self.left_wheel_speed, self.right_wheel_speed = 60, 60
+        self.left_wheel_speed, self.right_wheel_speed = 7.0, 7.0
         self.request_set_velocity()
 
-        self.cancelSleep(5)
+        self.get_logger().info("stopping act, strating wheel")
 
-        self.left_wheel_speed, self.right_wheel_speed = 0, 0
+        if not self.cancelSleep(5):
+            return
+
+        self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
         self.request_set_velocity()
 
-        self.actuatorMessage1.velocity = 100.0
+        self.get_logger().info("stop wheel")
 
-        act1_result = self.actuator1.call_async(self.actuatorMessage1)
-        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        self.actuatorMessage2.velocity = 100.0
+
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+
+        if not self.cancelSleep(5):
+            return
+
+        self.get_logger().info("done")
 
     def dumpMacro(self):
         pass
@@ -247,10 +269,11 @@ class ControlNode(Node):
         If it is, return early
         """
         startTime = time.time()
-        while rclpy.ok() and self.forwardVelocity != 0 and self.angularVelocity != 0:
+        while rclpy.ok() and self.forwardVelocity == 0 and self.angularVelocity == 0:
             if time.time() - startTime > seconds:
-                break
-            time.sleep(0.1)
+                return True
+    
+        return False
 
 
 # standard node main function

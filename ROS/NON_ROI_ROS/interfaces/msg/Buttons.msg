@@ -11,4 +11,4 @@ bool button_actuator_pitch_up
 bool button_actuator_pitch_down
 bool button_actuator_pitch_stop
 bool button_actuator_dig_cycle
-bool button_actuator_dump
+bool button_actuator_dump_cycle
