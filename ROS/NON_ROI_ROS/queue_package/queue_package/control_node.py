@@ -89,6 +89,10 @@ class ControlNode(Node):
 
         self.digMacroThread = threading.Thread(target=self.digMacro, daemon=True)
         self.dumpMacroThread = threading.Thread(target=self.dumpMacro, daemon=True)
+        self.nNavThread = threading.Thread(target=self.nav_north, daemon=True)
+        self.sNavThread = threading.Thread(target=self.nav_south, daemon=True)
+        self.eNavThread = threading.Thread(target=self.nav_east, daemon=True)
+        self.wNavThread = threading.Thread(target=self.nav_west, daemon=True)
 
     def calculateRPM(self):
         """
@@ -143,7 +147,7 @@ class ControlNode(Node):
         self.forwardVelocity = msg.linear.x
         self.angularVelocity = msg.angular.z
 
-        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive():
+        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive() and not self.nNavThread.is_alive() and not self.sNavThread.is_alive() and not self.wNavThread.is_alive() and not self.eNavThread.is_alive():
             self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
             self.request_set_velocity()
 
@@ -155,6 +159,26 @@ class ControlNode(Node):
         if self.buttonArray.button_actuator_dump_cycle == 1:
             if not self.dumpMacroThread.is_alive():
                 self.dumpMacroThread = threading.Thread(target=self.dumpMacro, daemon=True)
+                self.dumpMacroThread.start()
+
+        if self.buttonArray.button_wheel_nav_north == 1:
+            if not self.dumpMacroThread.is_alive():
+                self.dumpMacroThread = threading.Thread(target=self.nav_north, daemon=True)
+                self.dumpMacroThread.start()
+
+        if self.buttonArray.button_wheel_nav_east == 1:
+            if not self.dumpMacroThread.is_alive():
+                self.dumpMacroThread = threading.Thread(target=self.nav_east, daemon=True)
+                self.dumpMacroThread.start()
+
+        if self.buttonArray.button_wheel_nav_south == 1:
+            if not self.dumpMacroThread.is_alive():
+                self.dumpMacroThread = threading.Thread(target=self.nav_south, daemon=True)
+                self.dumpMacroThread.start()
+        
+        if self.buttonArray.button_wheel_nav_west == 1:
+            if not self.dumpMacroThread.is_alive():
+                self.dumpMacroThread = threading.Thread(target=self.nav_west, daemon=True)
                 self.dumpMacroThread.start()
 
         if self.buttonArray.button_actuator_arm_up == 1:
@@ -217,15 +241,15 @@ class ControlNode(Node):
         if not self.cancelSleep(5):
             return
 
-        self.actuatorMessage1.velocity = -50.0
-        act2_result = self.actuator1.call_async(self.actuatorMessage1)
-        # send again to be safe.
-        act2_result = self.actuator1.call_async(self.actuatorMessage1)
+        # self.actuatorMessage1.velocity = -50.0
+        # act2_result = self.actuator1.call_async(self.actuatorMessage1)
+        # # send again to be safe.
+        # act2_result = self.actuator1.call_async(self.actuatorMessage1)
 
-        self.get_logger().info("wrist back")
+        # self.get_logger().info("wrist back")
 
-        if not self.cancelSleep(0.15):
-            return
+        # if not self.cancelSleep(0.15):
+        #     return
 
         self.actuatorMessage1.velocity = 0.0
         self.actuatorMessage2.velocity = 0.0
@@ -237,6 +261,7 @@ class ControlNode(Node):
         act2_result = self.actuator2.call_async(self.actuatorMessage2)
 
         self.left_wheel_speed, self.right_wheel_speed = 7.0, 7.0
+        self.request_set_velocity()
         self.request_set_velocity()
 
         self.get_logger().info("stopping act, strating wheel")
@@ -260,10 +285,13 @@ class ControlNode(Node):
 
         self.get_logger().info("done")
 
+        self.dumpMacro()
+
     def dumpMacro(self):
         """Dump Macro. Wheels forward, then act 1 does 100, then back and forth, then wheels back."""
 
         self.left_wheel_speed, self.right_wheel_speed = 7.0, 7.0
+        self.request_set_velocity()
         self.request_set_velocity()
 
         self.get_logger().info("started dump macro")
@@ -273,10 +301,11 @@ class ControlNode(Node):
 
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
+        self.request_set_velocity()
 
         self.get_logger().info("stop wheel")
 
-        self.actuatorMessage1.velocity = 100.0
+        self.actuatorMessage1.velocity = -100.0
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
 
@@ -285,7 +314,7 @@ class ControlNode(Node):
 
         self.get_logger().info("actuator up")
 
-        self.actuatorMessage1.velocity = -100.0
+        self.actuatorMessage1.velocity = 100.0
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
 
@@ -294,7 +323,7 @@ class ControlNode(Node):
 
         self.get_logger().info("actuator down")
 
-        self.actuatorMessage1.velocity = 100.0
+        self.actuatorMessage1.velocity = -100.0
 
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
@@ -309,14 +338,16 @@ class ControlNode(Node):
 
         self.left_wheel_speed, self.right_wheel_speed = -7.0, -7.0
         self.request_set_velocity()
+        self.request_set_velocity()
         self.get_logger().info("wheels back")
         if not self.cancelSleep(3):
             return
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
+        self.request_set_velocity()
         self.get_logger().info("stop wheel")
 
-    def nav_forward(self):
+    def nav_north(self):
         """Literal shot in the dark"""
 
         self.left_wheel_speed, self.right_wheel_speed = 5.0, 5.0
@@ -333,7 +364,7 @@ class ControlNode(Node):
 
         self.get_logger().info("done, welcome to the dig zone?")
 
-    def nav_right_facing(self):
+    def nav_east(self):
         """Literal shot in the dark"""
 
         self.left_wheel_speed, self.right_wheel_speed = -5.0, 5.0
@@ -359,6 +390,58 @@ class ControlNode(Node):
         
         self.get_logger().info("done, welcome to the dig zone?")
 
+    def nav_west(self):
+        """Literal shot in the dark"""
+
+        self.left_wheel_speed, self.right_wheel_speed = 5.0, -5.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        # turning
+        if not self.cancelSleep(3.5):
+            return
+
+
+        self.left_wheel_speed, self.right_wheel_speed = 5.0, 5.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        if not self.cancelSleep(25):
+            return
+
+
+        self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+        
+        self.get_logger().info("done, welcome to the dig zone?")
+
+
+    def nav_south(self):
+        """Literal shot in the dark"""
+
+        self.left_wheel_speed, self.right_wheel_speed = -5.0, 5.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        # turning
+        if not self.cancelSleep(7):
+            return
+
+
+        self.left_wheel_speed, self.right_wheel_speed = 5.0, 5.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        if not self.cancelSleep(25):
+            return
+
+
+        self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+        
+        self.get_logger().info("done, welcome to the dig zone?")
 
     def cancelSleep(self, seconds):
         """
