@@ -263,6 +263,50 @@ class ControlNode(Node):
     def dumpMacro(self):
         pass
 
+    def nav_forward(self):
+        """Literal shot in the dark"""
+
+        self.left_wheel_speed, self.right_wheel_speed = 5.0, 5.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        if not self.cancelSleep(25):
+            return
+        
+
+        self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        self.get_logger().info("done, welcome to the dig zone?")
+
+    def nav_right_facing(self):
+        """Literal shot in the dark"""
+
+        self.left_wheel_speed, self.right_wheel_speed = -5.0, 5.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        # turning
+        if not self.cancelSleep(3.5):
+            return
+
+
+        self.left_wheel_speed, self.right_wheel_speed = 5.0, 5.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        if not self.cancelSleep(25):
+            return
+
+
+        self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
+        self.request_set_velocity()
+        self.request_set_velocity()
+        
+        self.get_logger().info("done, welcome to the dig zone?")
+
+
     def cancelSleep(self, seconds):
         """
         Sleep for a given number of seconds, but check if the cancel button is pressed
