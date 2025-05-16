@@ -3,67 +3,71 @@ from rclpy.node import Node
 import queue
 from std_msgs.msg import String
 from interfaces.msg import TwistPlus
-#from interfaces.srv import ODriveSetVelocity
+
+# from interfaces.srv import ODriveSetVelocity
 from roi_ros.srv import ODriveSetVelocity
 from roi_ros.srv import ActuatorSetVelocity
-import time
+import time, threading
 
-distance_between_wheels = 10 #meters
+distance_between_wheels = 10  # meters
 
-#What control_node should do:
-    #Listen to the output topic from mux_node which is a Twist_Plus() type message
-    #Twist_Plus includes:
-        #a linear vector with fields x, y, z
-        #an angular vector with fields x, y, z
-        #an array of booleans that represent controller button presses
-            #button array index to controller button list:
-                #0 - A/Cross
-                #1 - B/Circle
-                #2 - X/Triangle
-                #3 - Y/Square
-                #4 - L1
-                #5 - R1
-                #6 - Select
-                #7 - Start
-                #8 - Home/P3
-                #9 - Left Stick Press/L3
-                #10 - Right Stick Press/R3
-                #etc.
-    #Interperet the Twist_Plus to make a service request to the MCU package
-        #On startup call the "Set Mode" service
-        #Check to see if a button/macro is pressed/called
-            #If it is the "cancel" button, clear the que and send a "stop" command
-            #otherwise do the macro
-                #continue to velocity translations unless macro says to wait
-        #otherwise translate the linear.x (forwards velocity from -1 to 1?) and angular.z 
-        #(rotational velocity from w_min to w_max) into Left and Right motor RPMs/desired velocities
+# What control_node should do:
+# Listen to the output topic from mux_node which is a Twist_Plus() type message
+# Twist_Plus includes:
+# a linear vector with fields x, y, z
+# an angular vector with fields x, y, z
+# an array of booleans that represent controller button presses
+# button array index to controller button list:
+# 0 - A/Cross
+# 1 - B/Circle
+# 2 - X/Triangle
+# 3 - Y/Square
+# 4 - L1
+# 5 - R1
+# 6 - Select
+# 7 - Start
+# 8 - Home/P3
+# 9 - Left Stick Press/L3
+# 10 - Right Stick Press/R3
+# etc.
+# Interperet the Twist_Plus to make a service request to the MCU package
+# On startup call the "Set Mode" service
+# Check to see if a button/macro is pressed/called
+# If it is the "cancel" button, clear the que and send a "stop" command
+# otherwise do the macro
+# continue to velocity translations unless macro says to wait
+# otherwise translate the linear.x (forwards velocity from -1 to 1?) and angular.z
+# (rotational velocity from w_min to w_max) into Left and Right motor RPMs/desired velocities
 
-    #Also listens to incomming topics from MCU
-    #namely, 'current_state', 'node_name', 'node_health'
-    #and interperet/use that information
-        #unknown what to do with that info at this time. ~Ethan
+# Also listens to incomming topics from MCU
+# namely, 'current_state', 'node_name', 'node_health'
+# and interperet/use that information
+# unknown what to do with that info at this time. ~Ethan
+
 
 class ControlNode(Node):
     """
     Node for taking incoming requests and sending it to each part
     """
-    #Initialize node and crease subscribers and clients
+
+    # Initialize node and crease subscribers and clients
     def __init__(self):
-        super().__init__('control_node')
+        super().__init__("control_node")
 
-        self.mux_subscriber = self.create_subscription(TwistPlus, '/input/twist_plus', self.twist_callback, 10) # Rename 'macro_twist_plus in launch file
-        #self.active_macros = self.create_subscription(ActiveMacros, 'active_macros', self.macro_callback, 10)
+        self.mux_subscriber = self.create_subscription(
+            TwistPlus, "/input/twist_plus", self.twist_callback, 10
+        )  # Rename 'macro_twist_plus in launch file
+        # self.active_macros = self.create_subscription(ActiveMacros, 'active_macros', self.macro_callback, 10)
 
-        self.oDrive1= self.create_client(ODriveSetVelocity, '/oDrive1')
-        self.oDrive2 = self.create_client(ODriveSetVelocity, '/oDrive2')
-        self.oDrive3 = self.create_client(ODriveSetVelocity, '/oDrive3')
-        self.oDrive4 = self.create_client(ODriveSetVelocity, '/oDrive4')
-        self.oDriveBackup = self.create_client(ODriveSetVelocity, '/oDriveBackup')
+        self.oDrive1 = self.create_client(ODriveSetVelocity, "/oDrive1")
+        self.oDrive2 = self.create_client(ODriveSetVelocity, "/oDrive2")
+        self.oDrive3 = self.create_client(ODriveSetVelocity, "/oDrive3")
+        self.oDrive4 = self.create_client(ODriveSetVelocity, "/oDrive4")
+        # self.oDriveBackup = self.create_client(ODriveSetVelocity, '/oDriveBackup')
 
-        self.actuator1 = self.create_client(ActuatorSetVelocity, '/actuator1')
-        self.actuator2 = self.create_client(ActuatorSetVelocity, '/actuator2')
+        self.actuator1 = self.create_client(ActuatorSetVelocity, "/actuator1")
+        self.actuator2 = self.create_client(ActuatorSetVelocity, "/actuator2")
 
-        
         self.forwardVelocity = None
         self.angularVelocity = None
         self.buttonArray = None
@@ -81,8 +85,9 @@ class ControlNode(Node):
         self.act1_update = 1
         self.act2_update = 1
 
-        
-    
+        self.digMacroThread = threading.Thread(target=self.digMacro, daemon=True)
+        self.dumpMacroThread = threading.Thread(target=self.dumpMacro, daemon=True)
+
     def calculateRPM(self):
         """
         source `ros.org`_.
@@ -90,10 +95,10 @@ class ControlNode(Node):
         Calculate the RPM of the left and right wheels based on the linear and angular velocities
         .. _ros.org: https://control.ros.org/rolling/doc/ros2_controllers/doc/mobile_robot_kinematics.html#differential-drive-robot
         """
-        leftVelocity = (self.forwardVelocity - (self.angularVelocity * distance_between_wheels / 2))
-        rightVelocity = (self.forwardVelocity + (self.angularVelocity * distance_between_wheels / 2))
+        leftVelocity = self.forwardVelocity - (self.angularVelocity * distance_between_wheels / 2)
+        rightVelocity = self.forwardVelocity + (self.angularVelocity * distance_between_wheels / 2)
         return leftVelocity, rightVelocity
-    
+
     # Sends service request to all 4 wheel servers
     def request_set_velocity(self):
         """
@@ -104,21 +109,21 @@ class ControlNode(Node):
         right_message = ODriveSetVelocity.Request()
 
         # Set Left side speed and torque
-        
+
         left_message.velocity = self.left_wheel_speed * 5 * -1
         left_message.torque_feedforward = 0.0
 
         # Set Right side speed and torque
-        right_message.velocity = self.right_wheel_speed *5
+        right_message.velocity = self.right_wheel_speed * 5
         right_message.torque_feedforward = 0.0
 
         # Send request to server, and don't hold up waiting for response
-        #self.get_logger().info(str(left_message))
+        # self.get_logger().info(str(left_message))
         left_future1 = self.oDrive1.call_async(left_message)
         right_future1 = self.oDrive2.call_async(right_message)
-        
-        right_message.velocity = self.right_wheel_speed*5*-1
-        left_message.velocity = self.left_wheel_speed*5*-1
+
+        right_message.velocity = self.right_wheel_speed * 5 * -1
+        left_message.velocity = self.left_wheel_speed * 5 * -1
 
         right_future2 = self.oDrive4.call_async(right_message)
         left_future2 = self.oDrive3.call_async(left_message)
@@ -127,7 +132,7 @@ class ControlNode(Node):
 
     def macro_callback(self, msg):
         return 0
-    
+
     def twist_callback(self, msg):
         """
         Main update loop
@@ -137,6 +142,16 @@ class ControlNode(Node):
         self.angularVelocity = msg.angular.z
         self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
         self.request_set_velocity()
+
+        if self.buttonArray.button_actuator_dig_cycle == 1:
+            if not self.digMacroThread.is_alive():
+                self.digMacroThread = threading.Thread(target=self.digMacro, daemon=True)
+                self.digMacroThread.start()
+
+        if self.buttonArray.button_actuator_dump_cycle == 1:
+            if not self.dumpMacroThread.is_alive():
+                self.dumpMacroThread = threading.Thread(target=self.dumpMacro, daemon=True)
+                self.dumpMacroThread.start()
 
         if self.buttonArray.button_actuator_arm_up == 1:
             if self.actuatorMessage1.velocity != 100.0:
@@ -153,7 +168,6 @@ class ControlNode(Node):
                 self.act1_update = 1
             self.actuatorMessage1.velocity = 0.0
 
-
         if self.buttonArray.button_actuator_pitch_up == 1:
             if self.actuatorMessage2.velocity != 100.0:
                 self.act2_update = 1
@@ -169,20 +183,77 @@ class ControlNode(Node):
                 self.act2_update = 1
             self.actuatorMessage2.velocity = 0.0
 
-
         if self.act1_update == 1:
             act1_result = self.actuator1.call_async(self.actuatorMessage1)
-            self.get_logger().info(str(self.actuatorMessage1)+" was message to actuator1")
+            self.get_logger().info(str(self.actuatorMessage1) + " was message to actuator1")
             self.act1_update = 0
-        
+
         if self.act2_update == 1:
             act2_result = self.actuator2.call_async(self.actuatorMessage2)
-            self.get_logger().info(str(self.actuatorMessage2)+" was message to actuator2")
+            self.get_logger().info(str(self.actuatorMessage2) + " was message to actuator2")
             self.act2_update = 0
 
+    def digMacro(self):
+        """Dig Macro. Actuator 1 goes down, act 2 goes up, then slightly down.
+        then wheels forward for x secs."""
+
+        self.actuatorMessage1.velocity = -100.0
+        self.actuatorMessage2.velocity = 100.0
+
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        # send again to be safe.
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+
+        self.cancelSleep(5)
+
+        self.actuatorMessage2.velocity = 50.0
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        # send again to be safe.
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+
+        self.cancelSleep(0.5)
+
+        self.actuatorMessage1.velocity = 0.0
+        self.actuatorMessage2.velocity = 0.0
+
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        # send again to be safe.
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+
+        self.left_wheel_speed, self.right_wheel_speed = 60, 60
+        self.request_set_velocity()
+
+        self.cancelSleep(5)
+
+        self.left_wheel_speed, self.right_wheel_speed = 0, 0
+        self.request_set_velocity()
+        self.request_set_velocity()
+
+        self.actuatorMessage1.velocity = 100.0
+
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+        act1_result = self.actuator1.call_async(self.actuatorMessage1)
+
+    def dumpMacro(self):
+        pass
+
+    def cancelSleep(self, seconds):
+        """
+        Sleep for a given number of seconds, but check if the cancel button is pressed
+        If it is, return early
+        """
+        startTime = time.time()
+        while rclpy.ok() and self.forwardVelocity != 0 and self.angularVelocity != 0:
+            if time.time() - startTime > seconds:
+                break
+            time.sleep(0.1)
 
 
-#standard node main function
+# standard node main function
 def main(args=None):
     rclpy.init(args=args)
     control_node = ControlNode()
@@ -190,5 +261,6 @@ def main(args=None):
     control_node.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
