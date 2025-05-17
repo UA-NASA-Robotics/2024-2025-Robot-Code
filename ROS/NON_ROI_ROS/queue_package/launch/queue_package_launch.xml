@@ -30,7 +30,6 @@
                 <remap from="/oDrive2" to="/set_velocity/FR"/>
                 <remap from="/oDrive3" to="/set_velocity/RL"/>
                 <remap from="/oDrive4" to="/set_velocity/RR"/>
-                <remap from="/oDriveBackup" to="/set_velocity/Backup"/>
 
                 <remap from="/actuator1" to="/set_velocity/act1"/>
                 <remap from="/actuator2" to="/set_velocity/act2"/>

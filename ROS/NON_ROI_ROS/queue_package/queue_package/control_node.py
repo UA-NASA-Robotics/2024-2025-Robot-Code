@@ -65,7 +65,6 @@ class ControlNode(Node):
         self.oDrive2 = self.create_client(ODriveSetVelocity, "/oDrive2")
         self.oDrive3 = self.create_client(ODriveSetVelocity, "/oDrive3")
         self.oDrive4 = self.create_client(ODriveSetVelocity, "/oDrive4")
-        self.oDriveBackup = self.create_client(ODriveSetVelocity, "/oDriveBackup")
 
         self.actuator1 = self.create_client(ActuatorSetVelocity, "/actuator1")
         self.actuator2 = self.create_client(ActuatorSetVelocity, "/actuator2")
@@ -134,8 +133,6 @@ class ControlNode(Node):
 
         right_future2 = self.oDrive4.call_async(right_message)
         left_future2 = self.oDrive3.call_async(left_message)
-
-        backup_future = self.oDriveBackup.call_async(right_message)
 
     def macro_callback(self, msg):
         return 0
