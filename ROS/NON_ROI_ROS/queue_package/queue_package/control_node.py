@@ -93,6 +93,7 @@ class ControlNode(Node):
         self.sNavThread = threading.Thread(target=self.nav_south, daemon=True)
         self.eNavThread = threading.Thread(target=self.nav_east, daemon=True)
         self.wNavThread = threading.Thread(target=self.nav_west, daemon=True)
+        self.threeDigMacroThread = threading.Thread(target=self.three_dig_macro, daemon=True)
 
     def calculateRPM(self):
         """
@@ -147,14 +148,14 @@ class ControlNode(Node):
         self.forwardVelocity = msg.linear.x
         self.angularVelocity = msg.angular.z
 
-        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive() and not self.nNavThread.is_alive() and not self.sNavThread.is_alive() and not self.wNavThread.is_alive() and not self.eNavThread.is_alive():
+        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive() and not self.nNavThread.is_alive() and not self.sNavThread.is_alive() and not self.wNavThread.is_alive() and not self.eNavThread.is_alive() and not self.threeDigMacroThread.is_alive():
             self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
             self.request_set_velocity()
 
         if self.buttonArray.button_actuator_dig_cycle == 1:
-            if not self.digMacroThread.is_alive():
-                self.digMacroThread = threading.Thread(target=self.digMacro, daemon=True)
-                self.digMacroThread.start()
+            if not self.threeDigMacroThread.is_alive():
+                self.threeDigMacroThread = threading.Thread(target=self.three_dig_macro, daemon=True)
+                self.threeDigMacroThread.start()
 
         if self.buttonArray.button_actuator_dump_cycle == 1:
             if not self.dumpMacroThread.is_alive():
@@ -211,7 +212,7 @@ class ControlNode(Node):
                 self.act2_update = 1
             self.actuatorMessage2.velocity = 0.0
 
-        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive():
+        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive() and not self.threeDigMacroThread.is_alive():
 
             if self.act1_update == 1:
                 act1_result = self.actuator1.call_async(self.actuatorMessage1)
@@ -286,6 +287,11 @@ class ControlNode(Node):
         self.get_logger().info("done")
 
         self.dumpMacro()
+
+    def three_dig_macro(self):
+        self.digMacro()
+        self.digMacro()
+        self.digMacro()
 
     def dumpMacro(self):
         """Dump Macro. Wheels forward, then act 1 does 100, then back and forth, then wheels back."""
