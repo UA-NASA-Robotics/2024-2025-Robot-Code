@@ -239,22 +239,22 @@ class ControlNode(Node):
         if not self.cancelSleep(5):
             return
 
-        # self.actuatorMessage1.velocity = -50.0
-        # act2_result = self.actuator1.call_async(self.actuatorMessage1)
-        # # send again to be safe.
-        # act2_result = self.actuator1.call_async(self.actuatorMessage1)
+        self.actuatorMessage1.velocity = -50.0
+        act2_result = self.actuator1.call_async(self.actuatorMessage1)
+        # send again to be safe.
+        act2_result = self.actuator1.call_async(self.actuatorMessage1)
 
-        # self.get_logger().info("wrist back")
+        self.get_logger().info("wrist back")
 
-        # if not self.cancelSleep(0.15):
-        #     return
+        if not self.cancelSleep(0.25):
+            return
 
         self.actuatorMessage1.velocity = 0.0
         self.actuatorMessage2.velocity = 0.0
 
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act2_result = self.actuator2.call_async(self.actuatorMessage2)
-        # send again to be safe.
+        #send again to be safe.
         act1_result = self.actuator1.call_async(self.actuatorMessage1)
         act2_result = self.actuator2.call_async(self.actuatorMessage2)
 
@@ -343,7 +343,7 @@ class ControlNode(Node):
         self.request_set_velocity()
         self.request_set_velocity()
         self.get_logger().info("wheels back")
-        if not self.cancelSleep(3):
+        if not self.cancelSleep(6):
             return
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
@@ -455,6 +455,10 @@ class ControlNode(Node):
         while rclpy.ok() and self.forwardVelocity == 0 and self.angularVelocity == 0:
             if time.time() - startTime > seconds:
                 return True
+            self.request_set_velocity()
+            self.actuator1.call_async(self.actuatorMessage1)
+            self.actuator2.call_async(self.actuatorMessage2)
+            time.sleep(0.1)
 
         return False
 
