@@ -11,14 +11,5 @@
                 <remap from="/output" to="/queue/mux/twist_plus"/>
             </node>
         </group>
-
-        <group>
-            <node pkg="queue_package" 
-                exec="ODriveOrin" 
-                name="ODriveOrin">
-                <remap from="/output" to="/set_velocity/Backup"/>
-            </node>
-        </group>
-
     </group>
 </launch>
