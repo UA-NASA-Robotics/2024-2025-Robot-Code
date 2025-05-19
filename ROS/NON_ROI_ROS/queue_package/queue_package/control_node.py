@@ -286,16 +286,23 @@ class ControlNode(Node):
 
         self.get_logger().info("started dig macro")
 
-        if not self.cancelSleep(5):
+        if not self.cancelSleep(2):
             return
 
         self.actuatorMessage1.velocity = -100.0
-        self.actuatorMessage2.velocity = 100.0
+        
         act2_result = self.actuator1.call_async(self.actuatorMessage1)
-        self.actuator2.call_async(self.actuatorMessage2)
+        
         # send again to be safe.
         act2_result = self.actuator1.call_async(self.actuatorMessage1)
+
+        if not self.cancelSleep(0.25 + depth * 0.15):
+            return 
+       
+
+        self.actuatorMessage2.velocity = 100.0
         self.actuator2.call_async(self.actuatorMessage2)
+         self.actuator2.call_async(self.actuatorMessage2)
 
         self.get_logger().info("wrist back")
 
