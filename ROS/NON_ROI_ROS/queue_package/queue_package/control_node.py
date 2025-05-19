@@ -6,6 +6,8 @@ import rclpy.waitable
 from std_msgs.msg import String
 from interfaces.msg import TwistPlus
 
+from keyboard_msgs.msg import Key
+
 # from interfaces.srv import ODriveSetVelocity
 from roi_ros.srv import ODriveSetVelocity
 from roi_ros.srv import ActuatorSetVelocity
@@ -61,6 +63,9 @@ class ControlNode(Node):
         )  # Rename 'macro_twist_plus in launch file
         # self.active_macros = self.create_subscription(ActiveMacros, 'active_macros', self.macro_callback, 10)
 
+        self.keyboard_sub = self.create_subscription(Key, "keydown", self.keyboard_callback, 10)
+        self.is_keyboard_movement = False
+
         self.oDrive1 = self.create_client(ODriveSetVelocity, "/oDrive1")
         self.oDrive2 = self.create_client(ODriveSetVelocity, "/oDrive2")
         self.oDrive3 = self.create_client(ODriveSetVelocity, "/oDrive3")
@@ -93,6 +98,7 @@ class ControlNode(Node):
         self.eNavThread = threading.Thread(target=self.nav_east, daemon=True)
         self.wNavThread = threading.Thread(target=self.nav_west, daemon=True)
         self.threeDigMacroThread = threading.Thread(target=self.three_dig_macro, daemon=True)
+        self.keyboard_macro = threading.Thread(target=self.keyboard_run_macro, daemon=True)
 
     def calculateRPM(self):
         """
@@ -105,6 +111,50 @@ class ControlNode(Node):
         rightVelocity = self.forwardVelocity + (self.angularVelocity * distance_between_wheels / 2)
         return leftVelocity, rightVelocity
 
+    def keyboard_callback(self, msg):
+
+        self.get_logger().info("Hello World")
+        keyboard_code = msg.code
+
+        wheel_speeds = [5.0, 5.0]
+
+        key_translation_linear = {97: 1, 115: 2, 100: 3, 102: 4} # Time in seconds for moving forward
+        key_translation_angular = {106: 1, 107: 2, 108: 3, 59: 4, 117: -1, 105: -2, 111: -3, 112: -4} # Time in seconds for rotating, negative counterclockwise
+
+        distance_time = key_translation_linear.get(keyboard_code, 0)
+        turn_time = key_translation_angular.get(keyboard_code, 0)
+
+        if distance_time + turn_time == 0:
+            return
+        self.is_keyboard_movement = True
+
+        if turn_time != 0:
+            if turn_time > 0:
+                wheel_speeds[1] *= -1
+            else:
+                wheel_speeds[0] *= -1
+                turn_time *= -1
+        
+        self.left_wheel_speed = wheel_speeds[0]
+        self.right_wheel_speed = wheel_speeds[1]
+
+        self.keyboard_time = distance_time + turn_time
+
+        if distance_time + turn_time > 0:
+            if not self.keyboard_macro.is_alive():
+                self.keyboard_macro = threading.Thread(target=self.keyboard_run_macro, daemon=True)
+                self.keyboard_macro.start()
+        
+    def keyboard_run_macro(self):
+
+        self.get_logger().info(str(self.keyboard_time))
+
+        if not self.cancelSleep(self.keyboard_time):
+            self.is_keyboard_movement = False
+            return
+        
+        self.is_keyboard_movement = False
+        
     # Sends service request to all 4 wheel servers
     def request_set_velocity(self):
         """
@@ -145,7 +195,7 @@ class ControlNode(Node):
         self.forwardVelocity = msg.linear.x
         self.angularVelocity = msg.angular.z
 
-        if not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive() and not self.nNavThread.is_alive() and not self.sNavThread.is_alive() and not self.wNavThread.is_alive() and not self.eNavThread.is_alive() and not self.threeDigMacroThread.is_alive():
+        if not self.is_keyboard_movement and not self.digMacroThread.is_alive() and not self.dumpMacroThread.is_alive() and not self.nNavThread.is_alive() and not self.sNavThread.is_alive() and not self.wNavThread.is_alive() and not self.eNavThread.is_alive() and not self.threeDigMacroThread.is_alive():
             self.left_wheel_speed, self.right_wheel_speed = self.calculateRPM()
             self.request_set_velocity()
 
@@ -449,6 +499,7 @@ class ControlNode(Node):
         Sleep for a given number of seconds, but check if the cancel button is pressed
         If it is, return early
         """
+        self.get_logger().info(str(self.forwardVelocity))
         startTime = time.time()
         while rclpy.ok() and self.forwardVelocity == 0 and self.angularVelocity == 0:
             if time.time() - startTime > seconds:
