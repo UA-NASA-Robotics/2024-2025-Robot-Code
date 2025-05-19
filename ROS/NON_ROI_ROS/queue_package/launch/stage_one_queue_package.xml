@@ -1,0 +1,24 @@
+<launch>
+    <arg name="use_turtlesim" default="false"/>
+
+    <group>
+        <group>
+            <node pkg="queue_package" 
+                exec="mux_control" 
+                name="mux_control">
+                <remap from="/input1" to="/rs/twist_plus"/>
+                <remap from="/input2" to="/autonomy/twist_plus"/>
+                <remap from="/output" to="/queue/mux/twist_plus"/>
+            </node>
+        </group>
+
+        <group>
+            <node pkg="queue_package" 
+                exec="ODriveOrin" 
+                name="ODriveOrin">
+                <remap from="/output" to="/set_velocity/Backup"/>
+            </node>
+        </group>
+
+    </group>
+</launch>

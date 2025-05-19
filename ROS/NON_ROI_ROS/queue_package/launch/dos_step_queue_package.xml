@@ -1,0 +1,35 @@
+<launch>
+    <arg name="use_turtlesim" default="false"/>
+        <group>
+            <node pkg="queue_package" 
+                exec="control_node" 
+                name="control_node" 
+                output="screen">
+                <remap from="/input/twist_plus" to="/queue/mux/twist_plus"/>
+                <remap from="/oDrive1" to="/set_velocity/FL"/>
+                <remap from="/oDrive2" to="/set_velocity/FR"/>
+                <remap from="/oDrive3" to="/set_velocity/RL"/>
+                <remap from="/oDrive4" to="/set_velocity/RR"/>
+
+                <remap from="/actuator1" to="/set_velocity/act1"/>
+                <remap from="/actuator2" to="/set_velocity/act2"/>
+            </node>
+        </group>
+
+        <group if="$(var use_turtlesim)">
+            <node pkg="rs_package"
+                exec="separate_twistplus"
+                name="separate_twistplus"
+                output="screen">
+                <remap from="/cmd_vel" to="/turtle1/cmd_vel"/>
+            </node>
+
+            <node pkg="rs_package"
+                exec="separate_twistplus"
+                name="separate_twistplus"
+                output="screen">
+                <remap from="/cmd_vel" to="/output/cmd_vel"/>
+            </node>
+        </group>
+    </group>
+</launch>
