@@ -302,7 +302,7 @@ class ControlNode(Node):
 
         self.actuatorMessage2.velocity = 100.0
         self.actuator2.call_async(self.actuatorMessage2)
-         self.actuator2.call_async(self.actuatorMessage2)
+        self.actuator2.call_async(self.actuatorMessage2)
 
         self.get_logger().info("wrist back")
 
