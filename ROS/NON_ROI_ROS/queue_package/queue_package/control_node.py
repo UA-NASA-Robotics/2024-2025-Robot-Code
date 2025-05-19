@@ -295,7 +295,6 @@ class ControlNode(Node):
 
         self.left_wheel_speed, self.right_wheel_speed = 7.0, 7.0
         self.request_set_velocity()
-        self.request_set_velocity()
 
         self.get_logger().info("started dump macro")
 
@@ -303,7 +302,6 @@ class ControlNode(Node):
             return
 
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
-        self.request_set_velocity()
         self.request_set_velocity()
 
         self.get_logger().info("stop wheel")
@@ -343,7 +341,7 @@ class ControlNode(Node):
         self.request_set_velocity()
         self.request_set_velocity()
         self.get_logger().info("wheels back")
-        if not self.cancelSleep(6):
+        if not self.cancelSleep(6.5):
             return
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
@@ -357,7 +355,7 @@ class ControlNode(Node):
         self.request_set_velocity()
         self.request_set_velocity()
 
-        if not self.cancelSleep(25):
+        if not self.cancelSleep(45):
             return
         
 
@@ -383,7 +381,7 @@ class ControlNode(Node):
         self.request_set_velocity()
         self.request_set_velocity()
 
-        if not self.cancelSleep(25):
+        if not self.cancelSleep(45):
             return
 
 
@@ -409,7 +407,7 @@ class ControlNode(Node):
         self.request_set_velocity()
         self.request_set_velocity()
 
-        if not self.cancelSleep(25):
+        if not self.cancelSleep(45):
             return
 
 
@@ -436,7 +434,7 @@ class ControlNode(Node):
         self.request_set_velocity()
         self.request_set_velocity()
 
-        if not self.cancelSleep(25):
+        if not self.cancelSleep(45):
             return
 
 
@@ -456,8 +454,8 @@ class ControlNode(Node):
             if time.time() - startTime > seconds:
                 return True
             self.request_set_velocity()
-            self.actuator1.call_async(self.actuatorMessage1)
-            self.actuator2.call_async(self.actuatorMessage2)
+            #self.actuator1.call_async(self.actuatorMessage1)
+            #self.actuator2.call_async(self.actuatorMessage2)
             time.sleep(0.1)
 
         return False
