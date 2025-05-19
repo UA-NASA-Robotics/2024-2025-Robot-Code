@@ -14,14 +14,6 @@
 
         <group>
             <node pkg="queue_package" 
-                exec="ODriveOrin" 
-                name="ODriveOrin">
-                <remap from="/output" to="/set_velocity/Backup"/>
-            </node>
-        </group>
-
-        <group>
-            <node pkg="queue_package" 
                 exec="control_node" 
                 name="control_node" 
                 output="screen">
