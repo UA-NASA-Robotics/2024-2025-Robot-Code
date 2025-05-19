@@ -271,7 +271,7 @@ class ControlNode(Node):
                 self.get_logger().info(str(self.actuatorMessage2) + " was message to actuator2")
                 self.act2_update = 0
 
-    def digMacro(self):
+    def digMacro(self, depth=0):
         """Dig Macro. Actuator 1 goes down, act 2 goes up, then slightly down.
         then wheels forward for x secs."""
 
@@ -289,14 +289,17 @@ class ControlNode(Node):
         if not self.cancelSleep(5):
             return
 
-        self.actuatorMessage1.velocity = -50.0
+        self.actuatorMessage1.velocity = -100.0
+        self.actuatorMessage2.velocity = 100.0
         act2_result = self.actuator1.call_async(self.actuatorMessage1)
+        self.actuator2.call_async(self.actuatorMessage2)
         # send again to be safe.
         act2_result = self.actuator1.call_async(self.actuatorMessage1)
+        self.actuator2.call_async(self.actuatorMessage2)
 
         self.get_logger().info("wrist back")
 
-        if not self.cancelSleep(0.25):
+        if not self.cancelSleep(0.25 + depth * 0.15):
             return
 
         self.actuatorMessage1.velocity = 0.0
@@ -314,8 +317,16 @@ class ControlNode(Node):
 
         self.get_logger().info("stopping act, strating wheel")
 
-        if not self.cancelSleep(5):
+        if not self.cancelSleep(3):
             return
+        
+        self.actuatorMessage1.velocity = 100.0
+        self.actuator1.call_async(self.actuatorMessage1)
+        self.actuator1.call_async(self.actuatorMessage1)
+
+        if not self.cancelSleep(2):
+            return
+
 
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
@@ -336,9 +347,9 @@ class ControlNode(Node):
         self.dumpMacro()
 
     def three_dig_macro(self):
-        self.digMacro()
-        self.digMacro()
-        self.digMacro()
+        self.digMacro(1)
+        self.digMacro(2)
+        self.digMacro(3)
 
     def dumpMacro(self):
         """Dump Macro. Wheels forward, then act 1 does 100, then back and forth, then wheels back."""
@@ -391,7 +402,7 @@ class ControlNode(Node):
         self.request_set_velocity()
         self.request_set_velocity()
         self.get_logger().info("wheels back")
-        if not self.cancelSleep(6.5):
+        if not self.cancelSleep(6.3):
             return
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
