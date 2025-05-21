@@ -275,48 +275,46 @@ class ControlNode(Node):
         """Dig Macro. Actuator 1 goes down, act 2 goes up, then slightly down.
         then wheels forward for x secs."""
 
-        self.actuatorMessage1.velocity = 100.0
-        self.actuatorMessage2.velocity = -100.0
+        # NOTE: positive is up for both actuators, negative is down
+        # NOTE: actuator1 is pitch and 2 is arm
 
-        act1_result = self.actuator1.call_async(self.actuatorMessage1)
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
-        # send again to be safe.
-        act1_result = self.actuator1.call_async(self.actuatorMessage1)
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        #
+        ## home arm all the way up put bucket perpendicular to ground
+        #
+        self.act1(-100.0)
+        self.act2(100.0)
 
         self.get_logger().info("started dig macro")
 
-        if not self.cancelSleep(2):
+        if not self.cancelSleep(1):
             return
 
-        self.actuatorMessage1.velocity = -100.0
-        
-        act2_result = self.actuator1.call_async(self.actuatorMessage1)
-        
-        # send again to be safe.
-        act2_result = self.actuator1.call_async(self.actuatorMessage1)
+        #
+        ## Plunge pitch into ground by lowering arm
+        #
+        self.act2(-100.0)
 
-        if not self.cancelSleep(0.25 + depth * 0.15):
+        if not self.cancelSleep(3):
+            return
+        
+        #
+        ## Bring arm up and lessen the pitch's angle of attack
+        #
+        self.act1(100.0)
+        self.act2(100.0)
+
+        if not self.cancelSleep(0.1 + depth * 0.1):
             return 
-       
+        
+        self.act2(0)
 
-        self.actuatorMessage2.velocity = 100.0
-        self.actuator2.call_async(self.actuatorMessage2)
-        self.actuator2.call_async(self.actuatorMessage2)
-
-        self.get_logger().info("wrist back")
-
-        if not self.cancelSleep(0.25 + depth * 0.15):
+        if not self.cancelSleep(0.35 + depth * 0.2):
             return
 
-        self.actuatorMessage1.velocity = 0.0
-        self.actuatorMessage2.velocity = 0.0
-
-        act1_result = self.actuator1.call_async(self.actuatorMessage1)
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
-        #send again to be safe.
-        act1_result = self.actuator1.call_async(self.actuatorMessage1)
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        #
+        ## Move and dig
+        #
+        self.act1(0.0)
 
         self.left_wheel_speed, self.right_wheel_speed = 7.0, 7.0
         self.request_set_velocity()
@@ -327,13 +325,13 @@ class ControlNode(Node):
         if not self.cancelSleep(3):
             return
         
-        self.actuatorMessage1.velocity = 100.0
-        self.actuator1.call_async(self.actuatorMessage1)
-        self.actuator1.call_async(self.actuatorMessage1)
+        #
+        ## Begin raising pitch for movement to dump zone, stop moving
+        #
+        self.act1(100.0)
 
         if not self.cancelSleep(2):
             return
-
 
         self.left_wheel_speed, self.right_wheel_speed = 0.0, 0.0
         self.request_set_velocity()
@@ -341,22 +339,22 @@ class ControlNode(Node):
 
         self.get_logger().info("stop wheel")
 
-        self.actuatorMessage2.velocity = 100.0
-
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
-        act2_result = self.actuator2.call_async(self.actuatorMessage2)
+        #
+        ## Raising arm
+        #
+        self.act2(100.0)
 
         if not self.cancelSleep(5):
             return
 
-        self.get_logger().info("done")
+        self.get_logger().info("dig cycle done")
 
         self.dumpMacro()
 
     def three_dig_macro(self):
-        self.digMacro(1)
         self.digMacro(2)
-        self.digMacro(3)
+        self.digMacro(2)
+        self.digMacro(1)
 
     def dumpMacro(self):
         """Dump Macro. Wheels forward, then act 1 does 100, then back and forth, then wheels back."""
@@ -529,6 +527,16 @@ class ControlNode(Node):
 
         return False
 
+    def act1(self, velocity = 0.0):
+        self.actuatorMessage1.velocity = float(velocity)
+        self.actuator1.call_async(self.actuatorMessage1)
+        self.actuator1.call_async(self.actuatorMessage1)
+
+    def act2(self, velocity = 0.0):
+        self.actuatorMessage2.velocity = float(velocity)
+        self.actuator2.call_async(self.actuatorMessage2)
+        self.actuator2.call_async(self.actuatorMessage2)
+        
 
 # standard node main function
 def main(args=None):
