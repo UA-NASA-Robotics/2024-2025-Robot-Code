@@ -18,4 +18,7 @@ Above is a Diagram created using draw.io displaying the desired ROS node diagram
 4. **RS Package:** The RS (or Remote Station) Package takes input from a user and parses them into the ROS dataflow. This will allow human control, which is paramount to testing and if autonomous fails.
 
 ## Cameras
-The cameras are currently being streamed over UDP using FFMPEG. The cameras are set to 720p and bandwidth limited to 1500 kbps per camera.
+The cameras are currently being streamed over UDP using FFMPEG. The cameras are set to 720p and bandwidth limited to 1500 kbps per camera. Scripts 1 and 2 start the back and front cameras respectively. The IP address `230.0.0.1` is just a chosen multicast address. VLC throws a fit when trying to receive the stream, the most reliable program found so far is MPlayer. The following can be run on the remote station to receive stream 1:
+```mplayer udp://230.0.0.1:8000```
+and for stream 2:
+```mplayer udp://230.0.0.1:8001```
