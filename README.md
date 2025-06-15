@@ -9,7 +9,7 @@ The ROI repo is installed as a submodule. When cloning the repository, run `git 
 
 ## ROS Diagram
 
-![Image Didn't Load :(](./Docs/ROS_Flowchart.png "ROS Diagram")
+![Image Didn't Load :(](./Docs/rosgraph.png "ROS Diagram")
 
 Above is a Diagram created using rqt showing the flow of data through our architecture. 
 > **NOTE:** The diagram does not include the services
@@ -18,3 +18,40 @@ Above is a Diagram created using rqt showing the flow of data through our archit
 2. **Queue Package:** This package determines whether our movements are based off of autonomous inputs or human/RS inputs. It also holds a qeue for any multi movement commands. For example if someone was to press a button to lower the bucket and move forward, that sequence would be stored here.
 3. **Autonomous:** This package as the name implies is the autonomy. Note that the actual package will have more than one node.
 4. **RS Package:** The RS (or Remote Station) Package takes input from a user and parses them into the ROS dataflow. This will allow human control.
+
+## Running The Robot
+
+### Initializing the submodules
+This project contains two submodules, the ROI modules and the keyboard module. To properly run the code both need to be properly initialized, to do so run the following commands in a terminal:
+
+```shell
+git submodule init
+git submodule update
+```
+
+### Installing Dependencies for the Keyboard Module
+The keyboard modules can be installed using the following command in a terminal:
+
+```shell
+sudo apt install libsdl1.2-dev
+```
+
+### Building and Sourcing
+We must first build the code before running it. To do so cd into './2024-2025-ROBOT-CODE/ROS' then type:
+```shell
+colcon build
+```
+
+Once done building source the code using:
+```shell
+source install/setup.bash
+```
+### Running code
+Finally run the code with the following (each in its own terminal):
+```shell
+ros2 launch rs_package rs_package.xml
+ros2 launch queue_package queue_package_launch.xml
+ros2 launch roi_ros roi_launch.xml
+```
+
+> **NOTE:** If you are having trouble running these commands, ensure that ROS2 is installed and sourced properly.
