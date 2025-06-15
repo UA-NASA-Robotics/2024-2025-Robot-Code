@@ -7,6 +7,9 @@ There are three main folder at top level: ROS, Docs, and Other. ROS holds the pa
 ### ROI
 The ROI repo is installed as a submodule. When cloning the repository, run `git submodule init` and `git submodule update` to clone the latest ROI code into your workspace.
 
+### gahh
+This is a virtual enviroment that was used to download the ros2keyboard dependencies and is needed for the program to run properly.
+
 ## ROS Diagram
 
 ![Image Didn't Load :(](./Docs/rosgraph.png "ROS Diagram")
